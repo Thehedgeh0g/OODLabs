@@ -90,7 +90,7 @@ auto operator <<(Component &&component, const Decorator &decorate)
     return decorate(forward<Component>(component));
 }
 
-bool chooseCappuccino(unique_ptr<IBeverage> &beverage)
+bool ChooseCappuccino(unique_ptr<IBeverage> &beverage)
 {
     std::cout << "Choose Cappuccino Portion:\n1 - Standard\n2 - Double" << endl;
     int CappuccinoPortionChoice;
@@ -106,7 +106,7 @@ bool chooseCappuccino(unique_ptr<IBeverage> &beverage)
     return true;
 }
 
-bool chooseLatte(unique_ptr<IBeverage> &beverage)
+bool ChooseLatte(unique_ptr<IBeverage> &beverage)
 {
     std::cout << "Choose Latte Portion:\n1 - Standard\n2 - Double" << endl;
     int LattePortionChoice;
@@ -122,7 +122,7 @@ bool chooseLatte(unique_ptr<IBeverage> &beverage)
     return true;
 }
 
-bool chooseTea(unique_ptr<IBeverage> &beverage)
+bool ChooseTea(unique_ptr<IBeverage> &beverage)
 {
     cout << "Choose Tea type: 1 - Black, 2 - Green, 3 - Herbal, 4 - Red\n";
     int teaChoice;
@@ -138,7 +138,7 @@ bool chooseTea(unique_ptr<IBeverage> &beverage)
     return true;
 }
 
-bool chooseMilkshake(unique_ptr<IBeverage> &beverage)
+bool ChooseMilkshake(unique_ptr<IBeverage> &beverage)
 {
     cout << "Choose Milkshake size: 1 - Small, 2 - Medium, 3 - Large\n";
     int milkShakeSizeChoice;
@@ -162,13 +162,13 @@ bool extendedBeverageChoice(unique_ptr<IBeverage> &beverage, int beverageChoice)
             beverage = make_unique<CCoffee>();
             return true;
         case 2:
-            return chooseCappuccino(beverage);
+            return ChooseCappuccino(beverage);
         case 3:
-            return chooseLatte(beverage);
+            return ChooseLatte(beverage);
         case 4:
-            return chooseTea(beverage);
+            return ChooseTea(beverage);
         case 5:
-            return chooseMilkshake(beverage);
+            return ChooseMilkshake(beverage);
         default:
             cout << "Invalid beverage choice" << endl;
             return false;
@@ -176,7 +176,7 @@ bool extendedBeverageChoice(unique_ptr<IBeverage> &beverage, int beverageChoice)
 }
 
 
-bool addLemon(unique_ptr<IBeverage> &beverage)
+bool AddLemon(unique_ptr<IBeverage> &beverage)
 {
     cout << "Choose Lemon pieces count\n";
     int lemonPieceChoice;
@@ -186,17 +186,27 @@ bool addLemon(unique_ptr<IBeverage> &beverage)
     return true;
 }
 
-bool addCinnamon(unique_ptr<IBeverage> &beverage)
+bool AddCinnamon(unique_ptr<IBeverage> &beverage)
 {
     beverage = move(beverage) << MakeCondiment<CCinnamon>();
     return true;
 }
 
-bool addIceCubes(unique_ptr<IBeverage> &beverage)
+bool AddIceCubes(unique_ptr<IBeverage> &beverage)
 {
-    cout << "Choose Ice Cube type: 1 - Dry, 2 - Water\n";
     int cubeTypeChoice;
-    cin >> cubeTypeChoice;
+
+    while (true)
+    {
+        cout << "Choose Ice Cube type: 1 - Dry, 2 - Water\n";
+        cin >> cubeTypeChoice;
+        if ((cubeTypeChoice < 1) || (cubeTypeChoice > 2))
+        {
+            break;
+        }
+        cout << "Invalid Ice Cube type Pieces count\n";
+    }
+
 
     cout << "Choose Ice Cube count\n";
     int cubeCountChoice;
@@ -206,7 +216,7 @@ bool addIceCubes(unique_ptr<IBeverage> &beverage)
     return true;
 }
 
-bool addChocolateCrumbs(unique_ptr<IBeverage> &beverage)
+bool AddChocolateCrumbs(unique_ptr<IBeverage> &beverage)
 {
     cout << "Choose Chocolate Crumbs mass\n";
     int chocolateCrumbsMassChoice;
@@ -216,7 +226,7 @@ bool addChocolateCrumbs(unique_ptr<IBeverage> &beverage)
     return true;
 }
 
-bool addCoconutFlakes(unique_ptr<IBeverage> &beverage)
+bool AddCoconutFlakes(unique_ptr<IBeverage> &beverage)
 {
     cout << "Choose Coconut Flakes mass\n";
     int coconutFlakesMassChoice;
@@ -226,33 +236,51 @@ bool addCoconutFlakes(unique_ptr<IBeverage> &beverage)
     return true;
 }
 
-bool addSyrup(unique_ptr<IBeverage> &beverage)
+bool AddSyrup(unique_ptr<IBeverage> &beverage)
 {
-    cout << "Choose Syrup type: 1 - Chocolate, 2 - Maple\n";
     int syrupTypeChoice;
-    cin >> syrupTypeChoice;
+
+    while (true)
+    {
+        cout << "Choose Syrup type: 1 - Chocolate, 2 - Maple\n";
+        cin >> syrupTypeChoice;
+        if ((syrupTypeChoice < 1) || (syrupTypeChoice > 2))
+        {
+            break;
+        }
+        cout << "Invalid Syrop type Pieces count\n";
+    }
 
     beverage = move(beverage) << MakeCondiment<CSyrup>(static_cast<SyrupType>(syrupTypeChoice));
     return true;
 }
 
-bool addLiquor(unique_ptr<IBeverage> &beverage)
+bool AddLiquor(unique_ptr<IBeverage> &beverage)
 {
-    cout << "Choose Liquor type: 1 - Chocolate, 2 - Nutty\n";
     int liquorTypeChoice;
-    cin >> liquorTypeChoice;
+
+    while (true)
+    {
+        cout << "Choose Liquor type: 1 - Chocolate, 2 - Nutty\n";
+        cin >> liquorTypeChoice;
+        if ((liquorTypeChoice < 1) || (liquorTypeChoice > 2))
+        {
+            break;
+        }
+        cout << "Invalid Liquor type Pieces count\n";
+    }
 
     beverage = move(beverage) << MakeCondiment<CLiquor>(liquorTypeChoice);
     return true;
 }
 
-bool addCream(unique_ptr<IBeverage> &beverage)
+bool AddCream(unique_ptr<IBeverage> &beverage)
 {
     beverage = move(beverage) << MakeCondiment<CCream>();
     return true;
 }
 
-bool addChocolatePieces(unique_ptr<IBeverage> &beverage)
+bool AddChocolatePieces(unique_ptr<IBeverage> &beverage)
 {
     int chocolatePiecesCountChoice;
     while (true)
@@ -275,23 +303,23 @@ bool extendedCondimentChoice(unique_ptr<IBeverage> &beverage, int condimentChoic
     switch (condimentChoice)
     {
         case 1:
-            return addLemon(beverage);
+            return AddLemon(beverage);
         case 2:
-            return addCinnamon(beverage);
+            return AddCinnamon(beverage);
         case 3:
-            return addIceCubes(beverage);
+            return AddIceCubes(beverage);
         case 4:
-            return addChocolateCrumbs(beverage);
+            return AddChocolateCrumbs(beverage);
         case 5:
-            return addCoconutFlakes(beverage);
+            return AddCoconutFlakes(beverage);
         case 6:
-            return addSyrup(beverage);
+            return AddSyrup(beverage);
         case 7:
-            return addLiquor(beverage);
+            return AddLiquor(beverage);
         case 8:
-            return addCream(beverage);
+            return AddCream(beverage);
         case 9:
-            return addChocolatePieces(beverage);
+            return AddChocolatePieces(beverage);
         default:
             return false;
     }
@@ -299,7 +327,7 @@ bool extendedCondimentChoice(unique_ptr<IBeverage> &beverage, int condimentChoic
 
 void DialogWithUser()
 {
-    vector<unique_ptr<IBeverage>> beverages;
+    vector<unique_ptr<IBeverage> > beverages;
     int beverageChoice;
 
     do
@@ -330,10 +358,10 @@ void DialogWithUser()
 
             beverages.push_back(move(beverage));
         }
+    }
+    while (true);
 
-    } while (true);
-
-    for (const auto& beverage : beverages)
+    for (const auto &beverage: beverages)
     {
         cout << beverage->GetDescription() << ", cost: " << beverage->GetCost() << endl;
     }

@@ -124,11 +124,11 @@ private:
 class CMilkshake : public CBeverage
 {
 public:
-	enum class PortionSize
+	enum class PortionSize: int
 	{
-		Small,
-		Medium,
-		Large
+		Small = 1,
+		Medium = 2,
+		Large = 3
 	};
 
 	explicit CMilkshake(const int size = 2)
