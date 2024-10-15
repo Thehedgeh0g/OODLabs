@@ -6,7 +6,6 @@
 #include <functional>
 
 using namespace std;
-
 /*
 Функция, возвращающая функцию, создающую коричную добавку
 */
@@ -200,7 +199,7 @@ bool AddIceCubes(unique_ptr<IBeverage> &beverage)
     {
         cout << "Choose Ice Cube type: 1 - Dry, 2 - Water\n";
         cin >> cubeTypeChoice;
-        if ((cubeTypeChoice < 1) || (cubeTypeChoice > 2))
+        if ((cubeTypeChoice == 1) || (cubeTypeChoice == 2))
         {
             break;
         }
@@ -244,7 +243,7 @@ bool AddSyrup(unique_ptr<IBeverage> &beverage)
     {
         cout << "Choose Syrup type: 1 - Chocolate, 2 - Maple\n";
         cin >> syrupTypeChoice;
-        if ((syrupTypeChoice < 1) || (syrupTypeChoice > 2))
+        if ((syrupTypeChoice == 1) || (syrupTypeChoice == 2))
         {
             break;
         }
@@ -263,7 +262,7 @@ bool AddLiquor(unique_ptr<IBeverage> &beverage)
     {
         cout << "Choose Liquor type: 1 - Chocolate, 2 - Nutty\n";
         cin >> liquorTypeChoice;
-        if ((liquorTypeChoice < 1) || (liquorTypeChoice > 2))
+        if ((liquorTypeChoice == 1) || (liquorTypeChoice == 2))
         {
             break;
         }
