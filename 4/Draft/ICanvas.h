@@ -4,16 +4,19 @@
 
 #ifndef ICANVAS_H
 #define ICANVAS_H
-#include "Color.h"
-#include "Point.h"
+#include "./../Shape/Color.h"
+#include "./../Shape/Point.h"
 
-class ICanvas
+namespace draft
 {
-public:
-    virtual ~ICanvas() = default;
+    class ICanvas
+    {
+    public:
+        virtual ~ICanvas() = default;
 
-    void virtual DrawLine(Point start, Point end) = 0;
-    void virtual DrawEllipse(Point center, double hx, double hy) = 0;
-    void virtual SetColor(Color color) = 0;
-};
+        void virtual DrawLine(shape::Point start, shape::Point end) = 0;
+        void virtual DrawEllipse(shape::Point center, double hx, double hy) = 0;
+        void virtual SetColor(shape::Color color) = 0;
+    };
+}
 #endif //ICANVAS_H

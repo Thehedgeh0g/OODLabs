@@ -6,12 +6,14 @@
 #define IDESIGNER_H
 #include "./../Draft/PictureDraft.h"
 
-class IDesigner
+namespace Designer
 {
-public:
-    virtual PictureDraft CreateDraft(std::istream& in) = 0;
+    class IDesigner
+    {
+    public:
+        virtual draft::PictureDraft CreateDraft(std::istream &in) = 0;
 
-    virtual ~IDesigner() = default;
-};
-
+        virtual ~IDesigner() = default;
+    };
+}
 #endif //IDESIGNER_H

@@ -7,38 +7,42 @@
 #include <memory>
 #include <vector>
 
-#include "Shape.h"
+#include "./../Shape/Shape.h"
 
-class PictureDraft
+
+namespace draft
 {
-public:
-    std::vector<std::unique_ptr<Shape> >::iterator begin()
+    class PictureDraft
     {
-        return m_shapes.begin();
-    }
+    public:
+        std::vector<std::unique_ptr<shape::Shape>>::iterator begin()
+        {
+            return m_shapes.begin();
+        }
 
-    std::vector<std::unique_ptr<Shape> >::iterator end()
-    {
-        return m_shapes.end();
-    }
+        std::vector<std::unique_ptr<shape::Shape>>::iterator end()
+        {
+            return m_shapes.end();
+        }
 
-    std::vector<std::unique_ptr<Shape> >::const_iterator cbegin()
-    {
-        return m_shapes.cbegin();
-    }
+        std::vector<std::unique_ptr<shape::Shape>>::const_iterator cbegin()
+        {
+            return m_shapes.cbegin();
+        }
 
-    std::vector<std::unique_ptr<Shape> >::const_iterator cend()
-    {
-        return m_shapes.cend();
-    }
+        std::vector<std::unique_ptr<shape::Shape>>::const_iterator cend()
+        {
+            return m_shapes.cend();
+        }
 
-    void AddShape(std::unique_ptr<Shape> &&shape)
-    {
-        m_shapes.push_back(std::move(shape));
-    }
+        void AddShape(std::unique_ptr<shape::Shape> &&shape)
+        {
+            m_shapes.push_back(std::move(shape));
+        }
 
-private:
-    std::vector<std::unique_ptr<Shape> > m_shapes;
-};
+    private:
+        std::vector<std::unique_ptr<shape::Shape>> m_shapes;
+    };
+}
 
 #endif //PICTUREDRAFT_H

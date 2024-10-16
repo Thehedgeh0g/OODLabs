@@ -15,9 +15,9 @@ class Client
 {
 public:
     Client(
-        std::unique_ptr<IDesigner>&& designer,
-        std::unique_ptr<IPainter>&& painter,
-        std::unique_ptr<ICanvas>&& canvas
+        std::unique_ptr<Designer::IDesigner>&& designer,
+        std::unique_ptr<Painter::IPainter>&& painter,
+        std::unique_ptr<draft::ICanvas>&& canvas
     ):
         m_canvas(std::move(canvas)),
         m_designer(std::move(designer)),
@@ -36,9 +36,9 @@ public:
     }
 
 private:
-    std::unique_ptr<ICanvas> m_canvas;
-    std::unique_ptr<IDesigner> m_designer;
-    std::unique_ptr<IPainter> m_painter;
+    std::unique_ptr<draft::ICanvas> m_canvas;
+    std::unique_ptr<Designer::IDesigner> m_designer;
+    std::unique_ptr<Painter::IPainter> m_painter;
 };
 
 #endif //CLIENT_H

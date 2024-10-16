@@ -6,17 +6,21 @@
 #define PAINTER_H
 #include "IPainter.h"
 
-class Painter: public IPainter
+namespace Painter
 {
-public:
-    ~Painter() override = default;
-
-    void DrawPicture(PictureDraft& draft, ICanvas& canvas) override
+    class Painter : public IPainter
     {
-        for (const auto& shape : draft) {
-            shape->Draw(canvas);
+    public:
+        ~Painter() override = default;
+
+        void DrawPicture(draft::PictureDraft &draft, draft::ICanvas &canvas) override
+        {
+            for (const auto &shape: draft)
+            {
+                shape->Draw(canvas);
+            }
         }
-    }
-};
+    };
+}
 
 #endif //PAINTER_H

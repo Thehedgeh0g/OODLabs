@@ -6,13 +6,17 @@
 #define ISHAPEFACTORY_H
 #include <memory>
 
-#include "../Draft/Shape.h"
+#include "../Shape/Shape.h"
 
-class IShapeFactory
+namespace Factory
 {
+    class IShapeFactory
+    {
     public:
-    virtual ~IShapeFactory() = default;
-    [[nodiscard]] virtual std::unique_ptr<Shape> CreateShape(std::string shapeData) const = 0;
-};
+        virtual ~IShapeFactory() = default;
+
+        [[nodiscard]] virtual std::unique_ptr<shape::Shape> CreateShape(std::string shapeData) const = 0;
+    };
+}
 
 #endif //ISHAPEFACTORY_H

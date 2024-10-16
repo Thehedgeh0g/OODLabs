@@ -4,13 +4,15 @@
 
 #ifndef IPAINTER_H
 #define IPAINTER_H
-#include "./../Draft/PictureDraft.h"
 
-class IPainter
+namespace Painter
 {
-public:
-    virtual ~IPainter() = default;
-    virtual void DrawPicture(PictureDraft& draft, ICanvas& canvas) = 0;
-};
+    class IPainter
+    {
+    public:
+        virtual ~IPainter() = default;
 
+        virtual void DrawPicture(draft::PictureDraft &draft, draft::ICanvas &canvas) = 0;
+    };
+}
 #endif //IPAINTER_H

@@ -7,15 +7,17 @@
 #include "Client/Client.h"
 #include "Designer/Designer.h"
 #include "Painter/Painter.h"
-#include "SFML/Canvas.h"
+#include "Canvas/Canvas.h"
+#include "Config/ConfigProvider.h"
 
 int main()
 {
-    std::ifstream in("hello.txt");
-    auto shapeFactory = std::make_unique<ShapeFactory>();
-    auto designer = std::make_unique<Designer>(std::move(shapeFactory));
-    auto painter = std::make_unique<Painter>();
-    auto canvas = std::make_unique<Canvas>(1000, 800);
+    auto configProvider = ConfigProvider("./Config.json");
+    std::ifstream in(configProvider.getInputPath());
+    auto shapeFactory = std::make_unique<Factory::ShapeFactory>();
+    auto designer = std::make_unique<Designer::Designer>(std::move(shapeFactory));
+    auto painter = std::make_unique<Painter::Painter>();
+    auto canvas = std::make_unique<gfx::Canvas>(1000, 800, configProvider.getOutputPath());
     auto client = Client(std::move(designer), std::move(painter), std::move(canvas));
     client.Run(in, std::cout);
     return 0;

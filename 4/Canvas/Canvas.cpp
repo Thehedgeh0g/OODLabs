@@ -9,8 +9,12 @@
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "stb_truetype.h"
 
-
-void Canvas::SaveToFile(const std::string& filename)
+namespace gfx
 {
-    stbi_write_png(filename.c_str(), width, height, 4, pixels.data(), width * 4);
+    void Canvas::SaveToFile()
+    {
+        stbi_write_png(m_outputPath.c_str(), m_width, m_height, 4, m_pixels.data(), m_width * 4);
+    }
 }
+
+

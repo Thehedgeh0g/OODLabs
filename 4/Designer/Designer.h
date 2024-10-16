@@ -10,39 +10,41 @@
 #include "./../ShapeFactory/ShapeFactory.h"
 #include "./../Draft/PictureDraft.h"
 
-class Designer : public IDesigner
+namespace Designer
 {
-public:
-    explicit Designer(std::unique_ptr<IShapeFactory> &&factory) : m_factory(std::move(factory))
+    class Designer : public IDesigner
     {
-    };
-
-    PictureDraft CreateDraft(std::istream &in) override
-    {
-        std::string line;
-
-        PictureDraft draft;
-
-        while (!in.eof())
+    public:
+        explicit Designer(std::unique_ptr<Factory::IShapeFactory> &&factory) : m_factory(std::move(factory))
         {
-            std::getline(in, line);
-            try
+        };
+
+        draft::PictureDraft CreateDraft(std::istream &in) override
+        {
+            std::string line;
+
+            draft::PictureDraft draft;
+
+            while (!in.eof())
             {
-                draft.AddShape(std::move(m_factory->CreateShape(line)));
+                std::getline(in, line);
+                try
+                {
+                    draft.AddShape(std::move(m_factory->CreateShape(line)));
+                }
+                catch (...)
+                {
+                    break;
+                }
             }
-            catch (...)
-            {
-                break;
-            }
+
+            return draft;
         }
 
-        return draft;
-    }
+        ~Designer() override = default;
 
-    ~Designer() override = default;
-
-private:
-    std::unique_ptr<ShapeFactory::IShapeFactory> m_factory;
-};
-
+    private:
+        std::unique_ptr<Factory::IShapeFactory> m_factory;
+    };
+}
 #endif //DESIGNER_H
