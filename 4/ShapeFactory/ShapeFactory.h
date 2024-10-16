@@ -5,6 +5,7 @@
 #ifndef FIGUREBUILDER_H
 #define FIGUREBUILDER_H
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 #include "./../Draft/Shape.h"

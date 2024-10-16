@@ -13,7 +13,7 @@ public:
     virtual ~ICanvas() = default;
 
     void virtual DrawLine(Point start, Point end) = 0;
-    void virtual DrawEllipse(Point center, double hx, double hy)= 0;
+    void virtual DrawEllipse(Point center, double hx, double hy) = 0;
     void virtual SetColor(Color color) = 0;
 };
 #endif //ICANVAS_H
