@@ -12,6 +12,8 @@
 
 int main()
 {
+    std::filesystem::path currentPath = std::filesystem::current_path();
+    std::cout << "Текущий каталог: " << currentPath << std::endl;
     auto configProvider = ConfigProvider("./Config.json");
     std::ifstream in(configProvider.getInputPath());
     auto shapeFactory = std::make_unique<Factory::ShapeFactory>();
