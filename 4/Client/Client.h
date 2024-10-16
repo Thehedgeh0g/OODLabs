@@ -28,8 +28,9 @@ public:
     void Run(std::istream &input, std::ostream &output) const
     {
         auto draft = m_designer->CreateDraft(input);
-        output << "Picture has ben painted" << std::endl;
+        output << "Rendering Picture..." << std::endl;
         m_painter->DrawPicture(draft, *m_canvas);
+        output << "Picture has been painted" << std::endl;
 
         std::string exit;
         std::getline(input, exit);

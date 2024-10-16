@@ -12,9 +12,7 @@
 
 int main()
 {
-    std::filesystem::path currentPath = std::filesystem::current_path();
-    std::cout << "Текущий каталог: " << currentPath << std::endl;
-    auto configProvider = ConfigProvider("./Config.json");
+    auto configProvider = ConfigProvider("./../Data/Config.json");
     std::ifstream in(configProvider.getInputPath());
     auto shapeFactory = std::make_unique<Factory::ShapeFactory>();
     auto designer = std::make_unique<Designer::Designer>(std::move(shapeFactory));

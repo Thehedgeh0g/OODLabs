@@ -72,7 +72,7 @@ namespace Factory
             const std::vector<std::string> &polygonInput)
         {
             std::vector<shape::Point> vertices;
-            for (size_t i = 2; i < polygonInput.size() - 1; i++)
+            for (size_t i = 2; i < polygonInput.size() - 1; i+=2)
             {
                 vertices.emplace_back(shape::Point{std::stod(polygonInput[i]), std::stod(polygonInput[i + 1])});
             }
@@ -102,7 +102,7 @@ namespace Factory
                 shape::Triangle(
                     shape::convertToColor(triangleInput[1]),
                     {std::stod(triangleInput[2]), std::stod(triangleInput[3])},
-                    {std::stod(triangleInput[4]), std::stod(triangleInput[4])},
+                    {std::stod(triangleInput[4]), std::stod(triangleInput[5])},
                     {std::stod(triangleInput[6]), std::stod(triangleInput[7])}
                 )
             );
@@ -113,8 +113,8 @@ namespace Factory
         std::unordered_map<std::string, int> m_figureMap = {
             {"ellipse", 0},
             {"rectangle", 1},
-            {"triangle", 2},
-            {"polygon", 3},
+            {"polygon", 2},
+            {"triangle", 3},
         };
     };
 }
