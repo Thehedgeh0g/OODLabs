@@ -44,6 +44,10 @@ namespace shape
 
     inline Color convertToColor(const std::string& colorStr)
     {
+        if (const auto it = stringToColor.find(colorStr); it == stringToColor.end())
+        {
+            throw std::invalid_argument("Invalid color string");
+        }
         return stringToColor.at(colorStr);
     }
 }

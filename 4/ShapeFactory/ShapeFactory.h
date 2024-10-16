@@ -21,7 +21,7 @@ namespace Factory
     class ShapeFactory : public IShapeFactory
     {
     public:
-        [[nodiscard]] std::unique_ptr<shape::Shape> CreateShape(std::string shapeData) const override
+        std::unique_ptr<shape::Shape> CreateShape(std::string shapeData) const override
         {
             size_t pos;
             std::vector<std::string> shapeParams;
@@ -33,23 +33,19 @@ namespace Factory
             }
             shapeParams.push_back(shapeData);
 
-            if (const auto it = m_figureMap.find(shapeParams[0]); it != m_figureMap.end())
+            auto it = m_figureMap.find(shapeParams[0]);
+            if (it != m_figureMap.end())
             {
-                switch (it->second)
-                {
-                    case static_cast<int>(shape::ShapeNames::Ellipse):
-                        return BuildEllipse(shapeParams);
-                    case static_cast<int>(shape::ShapeNames::RegularPolygon):
-                        return BuildRegularPolygon(shapeParams);
-                    case static_cast<int>(shape::ShapeNames::Rectangle):
-                        return BuildRectangle(shapeParams);
-                    case static_cast<int>(shape::ShapeNames::Triangle):
-                        return BuildTriangle(shapeParams);
-                    default:
-                        return nullptr;
-                }
+                if (it->second == "ellipse")
+                    return BuildEllipse(shapeParams);
+                else if (it->second == "polygon")
+                    return BuildRegularPolygon(shapeParams);
+                else if (it->second == "rectangle")
+                    return BuildRectangle(shapeParams);
+                else if (it->second == "triangle")
+                    return BuildTriangle(shapeParams);
             }
-            return nullptr;
+            throw std::invalid_argument("Unknown shape");
         }
 
         ~ShapeFactory() override = default;
@@ -72,7 +68,7 @@ namespace Factory
             const std::vector<std::string> &polygonInput)
         {
             std::vector<shape::Point> vertices;
-            for (size_t i = 2; i < polygonInput.size() - 1; i+=2)
+            for (size_t i = 2; i < polygonInput.size() - 1; i += 2)
             {
                 vertices.emplace_back(shape::Point{std::stod(polygonInput[i]), std::stod(polygonInput[i + 1])});
             }
@@ -110,11 +106,11 @@ namespace Factory
 
         const std::string DATA_DELIMITER = " ";
 
-        std::unordered_map<std::string, int> m_figureMap = {
-            {"ellipse", 0},
-            {"rectangle", 1},
-            {"polygon", 2},
-            {"triangle", 3},
+        std::unordered_map<std::string, std::string> m_figureMap = {
+            {"ellipse", "ellipse"},
+            {"rectangle", "rectangle"},
+            {"polygon", "polygon"},
+            {"triangle", "triangle"},
         };
     };
 }
