@@ -38,11 +38,11 @@ namespace Factory
             {
                 if (it->second == "ellipse")
                     return BuildEllipse(shapeParams);
-                else if (it->second == "polygon")
+                if (it->second == "polygon")
                     return BuildRegularPolygon(shapeParams);
-                else if (it->second == "rectangle")
+                if (it->second == "rectangle")
                     return BuildRectangle(shapeParams);
-                else if (it->second == "triangle")
+                if (it->second == "triangle")
                     return BuildTriangle(shapeParams);
             }
             throw std::invalid_argument("Unknown shape");

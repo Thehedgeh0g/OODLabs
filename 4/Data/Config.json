@@ -1,4 +1,4 @@
 {
-  "inputPath" : "./../Data/Input.txt",
+  "inputPath" : "./../4/Data/Input.txt",
   "outputPath": "./../Bin/Output.png"
 }

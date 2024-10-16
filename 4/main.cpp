@@ -12,7 +12,7 @@
 
 int main()
 {
-    auto configProvider = ConfigProvider("./../Data/Config.json");
+    auto configProvider = ConfigProvider("./../4/Data/Config.json");
     std::ifstream in(configProvider.getInputPath());
     auto shapeFactory = std::make_unique<Factory::ShapeFactory>();
     auto designer = std::make_unique<Designer::Designer>(std::move(shapeFactory));

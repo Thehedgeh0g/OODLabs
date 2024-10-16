@@ -6,8 +6,8 @@
 #define CANVAS_H
 #include <cmath>
 
-#include <SFML/Graphics.hpp>
 #include <utility>
+#include <vector>
 
 #include "./../Draft/ICanvas.h"
 
