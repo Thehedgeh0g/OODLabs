@@ -44,22 +44,23 @@ namespace History
 
         void AddAndExecuteCommand(std::unique_ptr<Command::ICommand> command)
         {
-            if (m_commands.size() > 1 && m_commands.at(m_nextCommandIndex-1)->GetName() == command->GetName())
+            if (!m_commands.empty() && m_commands.at(m_nextCommandIndex-1)->GetName() == command->GetName())
             {
                 if (auto* macroCommand = dynamic_cast<Command::MacroCommand*>(command.get()))
                 {
+                    command->Execute();
                     macroCommand->AddCommand(std::move(command));
                 }
                 else
                 {
                     auto macro = std::make_unique<Command::MacroCommand>();
+                    command->Execute();
                     macro->SetName(command->GetName());
                     macro->AddCommand(std::move(m_commands.at(m_nextCommandIndex-1)));
                     macro->AddCommand(std::move(command));
                     m_commands.pop_back();
                     m_commands.push_back(std::move(macro));
                 }
-                command->Execute();
                 return;
             }
             if (m_nextCommandIndex < m_commands.size())

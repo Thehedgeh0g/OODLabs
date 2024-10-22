@@ -3,6 +3,8 @@
 //
 
 #include "InsertImageCommand.h"
+
+#include <fstream>
 #include <iostream>
 
 #include "../DocumentItem/Image.h"

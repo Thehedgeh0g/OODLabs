@@ -32,9 +32,13 @@ namespace Command
             {
                 std::string imagePath = "images/" + std::filesystem::path(item.GetImage()->GetPath()).filename().
                                         string();
-                std::filesystem::copy(item.GetImage()->GetPath(),
-                                      imagesDirectory + "/" + std::filesystem::path(item.GetImage()->GetPath()).
-                                      filename().string());
+                remove(imagePath.c_str());
+
+                std::ifstream source(item.GetImage()->GetPath(), std::ios::binary);
+                std::ofstream destination(imagesDirectory + "/" + std::filesystem::path(item.GetImage()->GetPath()).filename().string(), std::ios::binary);
+                destination << source.rdbuf();
+                source.close();
+                destination.close();
                 outFile << "<img src=\"" << imagePath << "\" width=\"" << item.GetImage()->GetWidth() << "\" height=\""
                         << item.GetImage()->GetHeight() << "\" />\n";
             }
