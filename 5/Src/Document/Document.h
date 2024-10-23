@@ -22,9 +22,9 @@ namespace Document
 
         void ResizeImage(int width, int height, size_t position) override;
 
-        [[nodiscard]] DocumentItem::ConstDocumentItem Document::GetItem(size_t index) const override;
+        [[nodiscard]] DocumentItem::ConstDocumentItem GetItem(size_t index) const override;
 
-        DocumentItem::DocumentItem Document::GetItem(size_t index) override;
+        DocumentItem::DocumentItem GetItem(size_t index) override;
 
         [[nodiscard]] size_t GetItemsCount() const override;
 

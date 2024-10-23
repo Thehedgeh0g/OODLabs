@@ -1,14 +1,10 @@
-//
-// Created by thehedgeh0g on 23.10.24.
-//
-
 #ifndef MACROCOMMAND_H
 #define MACROCOMMAND_H
 #include <functional>
 #include <memory>
 #include <string>
 #include <utility>
-
+#include <vector>
 #include "AbstractCommand.h"
 
 namespace Command
@@ -16,9 +12,9 @@ namespace Command
     class MacroCommand : public AbstractCommand
     {
     public:
-        explicit MacroCommand();
+        explicit MacroCommand() = default;
 
-        void AddCommand(const std::unique_ptr<ICommand>& command);
+        void AddCommand(std::unique_ptr<ICommand> command);
 
         void SetName(std::string name)
         {
@@ -36,9 +32,9 @@ namespace Command
         void DoUnexecute() override;
 
     private:
-        std::vector<std::unique_ptr<ICommand> > m_commands = {};
+        std::vector<std::unique_ptr<ICommand>> m_commands = {};
         std::string m_name;
     };
-} // Command
+}
 
 #endif //MACROCOMMAND_H

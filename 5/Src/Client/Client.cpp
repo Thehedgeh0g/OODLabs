@@ -100,7 +100,7 @@ void Client::Save(const std::string &path)
 
 std::optional<size_t> Client::ParsePosition(const std::string &pos)
 {
-    return pos == "end" ? std::nullopt : std::stoi(pos);
+    return pos == "end" ? std::nullopt : std::optional<size_t>(std::stoi(pos));
 }
 
 void Client::ExecuteCommand(std::string command)

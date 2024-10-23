@@ -17,8 +17,6 @@ namespace Command
     class InsertParagraphCommand : public AbstractCommand
     {
     public:
-        static constexpr std::string name = "InsertParagraph";
-
         InsertParagraphCommand(
             std::vector<DocumentItem::DocumentItem> &documentItems,
             std::string text,

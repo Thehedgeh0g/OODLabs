@@ -12,13 +12,13 @@ namespace Command
     public:
         virtual ~ICommand() = default;
 
-        virtual void Execute();
+        virtual void Execute() = 0;
 
-        virtual void Unexecute();
+        virtual void Unexecute() = 0;
 
-        virtual bool IsExecuted();
+        [[nodiscard]] virtual bool IsExecuted() const = 0;
 
-        virtual std::string GetName();
+        [[nodiscard]] virtual std::string GetName() const = 0;
     };
 }
 #endif //ICOMMAND_H

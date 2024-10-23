@@ -30,4 +30,4 @@ namespace DocumentItem
         std::string m_text;
     };
 }
-#endif PARAGRAPH_H
+#endif //PARAGRAPH_H

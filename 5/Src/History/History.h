@@ -44,18 +44,18 @@ namespace History
 
         void AddAndExecuteCommand(std::unique_ptr<Command::ICommand> command)
         {
-            if (m_commands.at(m_nextCommandIndex-1)->GetName() == command->GetName())
+            if (m_commands.size() > 1 && m_commands.at(m_nextCommandIndex-1)->GetName() == command->GetName())
             {
                 if (auto* macroCommand = dynamic_cast<Command::MacroCommand*>(command.get()))
                 {
-                    macroCommand->AddCommand(command);
+                    macroCommand->AddCommand(std::move(command));
                 }
                 else
                 {
                     auto macro = std::make_unique<Command::MacroCommand>();
                     macro->SetName(command->GetName());
-                    macro->AddCommand(m_commands.at(m_nextCommandIndex-1));
-                    macro->AddCommand(command);
+                    macro->AddCommand(std::move(m_commands.at(m_nextCommandIndex-1)));
+                    macro->AddCommand(std::move(command));
                     m_commands.pop_back();
                     m_commands.push_back(std::move(macro));
                 }
@@ -94,4 +94,4 @@ namespace History
         size_t m_nextCommandIndex = 0;
     };
 }
-#endif HISTORY_H
+#endif //HISTORY_H

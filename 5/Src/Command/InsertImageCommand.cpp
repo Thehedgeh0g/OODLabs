@@ -9,6 +9,14 @@
 
 namespace Command
 {
+    InsertImageCommand::~InsertImageCommand()
+    {
+        if (!m_isExecuted)
+        {
+            remove(m_path.c_str());
+        }
+    }
+
     void InsertImageCommand::DoExecute()
     {
         const DocumentItem::DocumentItem newImage(std::make_shared<DocumentItem::Image>(m_path, m_width, m_height));
@@ -16,12 +24,10 @@ namespace Command
         if (m_position.has_value() && m_position.value() <= m_documentItems.size())
         {
             m_documentItems.insert(m_documentItems.begin() + m_position.value(), newImage);
-            m_isExecuted = true;
         }
         else if (!m_position.has_value())
         {
             m_documentItems.push_back(newImage);
-            m_isExecuted = true;
         }
         else
         {

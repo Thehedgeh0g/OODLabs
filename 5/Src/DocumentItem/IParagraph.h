@@ -18,4 +18,4 @@ namespace DocumentItem
         virtual void SetText(const std::string &text) = 0;
     };
 }
-#endif IPARAGRAPH_H
+#endif //IPARAGRAPH_H

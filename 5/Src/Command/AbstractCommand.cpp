@@ -1,27 +1,25 @@
 #include "AbstractCommand.h"
-//
-// Created by thehedgeh0g on 23.10.24.
-//
+
 namespace Command
 {
     void AbstractCommand::Execute()
     {
-        ICommand::Execute();
+        DoExecute();
         m_isExecuted = true;
     }
 
     void AbstractCommand::Unexecute()
     {
-        ICommand::Unexecute();
+        DoUnexecute();
         m_isExecuted = false;
     }
 
-    bool AbstractCommand::IsExecuted()
+    bool AbstractCommand::IsExecuted() const
     {
         return m_isExecuted;
     }
 
-    std::string AbstractCommand::GetName()
+    std::string AbstractCommand::GetName() const
     {
         return m_name;
     }

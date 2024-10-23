@@ -15,8 +15,6 @@ namespace Command
     class SaveCommand : public AbstractCommand
     {
     public:
-        static constexpr std::string name = "SaveCommand";
-
         SaveCommand(
             const std::vector<DocumentItem::DocumentItem> &documentItems,
             std::string path,
@@ -34,7 +32,7 @@ namespace Command
         void DoUnexecute() override;
 
     private:
-        static std::string SaveCommand::EscapeHtml(const std::string &text);
+        static std::string EscapeHtml(const std::string &text);
 
         std::vector<DocumentItem::DocumentItem> m_documentItems;
         std::string m_path;

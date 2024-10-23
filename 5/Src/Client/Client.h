@@ -20,7 +20,7 @@ public:
     void Run()
     {
         std::string line;
-        while (!std::cin.eof())
+        while (line != "end")
         {
             std::getline(std::cin, line);
             try

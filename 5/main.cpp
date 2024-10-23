@@ -6,8 +6,7 @@
 #include "Src/Client/Client.h"
 
 int main() {
-
-  auto document = std::make_unique<Document>;
-  auto client = Client(document);
+  auto client = Client(std::make_unique<Document::Document>());
+  client.Run();
   return 0;
 }

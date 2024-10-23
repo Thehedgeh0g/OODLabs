@@ -1,13 +1,9 @@
-//
-// Created by thehedgeh0g on 23.10.24.
-//
-
 #include "MacroCommand.h"
 
 namespace Command {
-    void MacroCommand::AddCommand(const std::unique_ptr<ICommand>& command)
+    void MacroCommand::AddCommand(std::unique_ptr<ICommand> command) // Измените здесь тоже
     {
-        m_commands.push_back(command);
+        m_commands.push_back(std::move(command)); // Теперь это работает
     }
 
     void MacroCommand::DoExecute()
@@ -32,4 +28,4 @@ namespace Command {
         }
     }
 
-} // Command
+}

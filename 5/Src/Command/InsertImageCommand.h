@@ -33,6 +33,8 @@ namespace Command
             m_name = "InsertImageCommand";
         }
 
+        ~InsertImageCommand();
+
     protected:
         void DoExecute() override;
 

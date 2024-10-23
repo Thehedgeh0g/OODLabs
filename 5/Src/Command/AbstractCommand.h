@@ -19,18 +19,18 @@ namespace Command
 
         void Unexecute() override;
 
-        bool IsExecuted() override;
+        [[nodiscard]] bool IsExecuted() const override;
 
-        std::string GetName() override;
+        [[nodiscard]] std::string GetName() const override;
 
     protected:
-        virtual void DoExecute();
+        virtual void DoExecute() = 0;
 
-        virtual void DoUnexecute();
+        virtual void DoUnexecute() = 0;
 
         bool m_isExecuted = false;
 
         std::string m_name;
     };
 }
-#endif ABSTRACTCOMMAND_H
+#endif //ABSTRACTCOMMAND_H

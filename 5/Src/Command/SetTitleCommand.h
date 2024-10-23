@@ -15,14 +15,13 @@ namespace Command
     class SetTitleCommand : public AbstractCommand
     {
     public:
-        static constexpr std::string name = "SetTitle";
-
         SetTitleCommand(
         std::string & title, std::string  newTitle
         ) :
             m_newTitle(std::move(newTitle)),
             m_title(title)
         {
+            m_name = "SetTitleCommand";
         }
 
     protected:
