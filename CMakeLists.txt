@@ -47,8 +47,6 @@ add_executable(OODLabs4_1 4/main.cpp
         4/Config/ConfigProvider.h
 )
 
-
-
 add_executable(OODLabsTest4_1 4/Test/test.cpp
         4/Shape/Color.h
         4/Shape/Point.h
@@ -77,3 +75,39 @@ add_test(NAME OODLabsTest4_1 COMMAND OODLabsTest4_1)
 
 target_link_libraries(OODLabs4_1 PRIVATE nlohmann_json::nlohmann_json)
 target_compile_features(OODLabs4_1 PRIVATE cxx_std_17)
+
+add_executable(OODLabs5_1 5/main.cpp
+        5/Src/Document/IDocument.h
+        5/Src/Document/Document.h
+        5/Src/DocumentItem/DocumentItem.h
+        5/Src/DocumentItem/ConstDocumentItem.h
+        5/Src/DocumentItem/IImage.h
+        5/Src/DocumentItem/IParagraph.h
+        5/Src/DocumentItem/Image.h
+        5/Src/DocumentItem/Paragraph.h
+        5/Src/History/History.h
+        5/Src/Command/ICommand.h
+        5/Src/Command/AbstractCommand.h
+        5/Src/Command/InsertParagraphCommand.h
+        5/Src/Command/InsertImageCommand.h
+        5/Src/Command/DeleteCommand.h
+        5/Src/Command/SetTitleCommand.h
+        5/Src/Command/ResizeImageCommand.h
+        5/Src/Command/EditParagraphCommand.h
+        5/Src/Command/SaveCommand.h
+        5/Src/Client/Client.h
+        5/Src/Command/DeleteCommand.cpp
+        5/Src/Command/EditParagraphCommand.cpp
+        5/Src/Command/InsertImageCommand.cpp
+        5/Src/Command/InsertParagraphCommand.cpp
+        5/Src/Command/ResizeImageCommand.cpp
+        5/Src/Command/SaveCommand.cpp
+        5/Src/Command/SetTitleCommand.cpp
+        5/Src/Command/MacroCommand.cpp
+        5/Src/Command/MacroCommand.h
+        5/Src/Command/AbstractCommand.cpp
+        5/Src/CommandHandler/CommandHandler.cpp
+        5/Src/CommandHandler/CommandHandler.h
+        5/Src/Document/Document.cpp
+        5/Src/Client/Client.cpp
+)
