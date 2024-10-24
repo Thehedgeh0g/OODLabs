@@ -58,11 +58,11 @@ void Client::ResizeImage(const std::string &pos, const std::string &width, const
 void Client::DeleteItem(const std::string &pos) const
 {
     auto position = ParsePosition(pos);
-    if (!position.has_value())
+    if (!position.has_value() || (position.value() - 1 < 0))
     {
         throw std::invalid_argument("Invalid position");
     }
-    m_document->DeleteItem(position.value());
+    m_document->DeleteItem(position.value()-1);
 }
 
 void Client::Help()

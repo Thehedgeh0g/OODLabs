@@ -42,6 +42,8 @@ classDiagram
     InsertImageCommand o-- DocumentItem
     ResizeImageCommand o-- DocumentItem
     
+    Client *-- IDocument
+    
     class IDocument {
         +unique_ptr InsertParagraph(const string& text, optional<size_t> position = none)*
         +unique_ptr InsertImage(const Path& path, int width, int height, optional<size_t> position = none)*
@@ -200,6 +202,23 @@ classDiagram
         - string m_title
         #DoExecute()
         #DoUnexecute()
+    }
+
+    class Client {
+        +void Run()
+        -void InsertParagraph(const std:: string &pos, const std:: string &text)
+        -void InsertImage(const std:: string &pos, const std:: string &width, const std:: string &height, const std:: string &path)
+        -void SetTitle(const std:: string &newTitle)
+        -void List()
+        -void ReplaceText(const std:: string &pos, const std:: string &text)
+        -void ResizeImage(const std:: string &pos, const std:: string &width, const std:: string &height)
+        -void DeleteItem(const std:: string &pos)
+        -void Help()
+        -void Undo()
+        -void Redo()
+        -void Save(const std:: string &path)
+        -static std:: optional<size_t> ParsePosition(const std:: string &pos)
+        -void ExecuteCommand(std:: string command)
     }
 
 ```
