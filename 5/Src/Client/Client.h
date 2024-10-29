@@ -29,7 +29,7 @@ public:
             }
             catch (...)
             {
-                break;
+                std::cerr << "Invalid command found";;
             }
         }
     }

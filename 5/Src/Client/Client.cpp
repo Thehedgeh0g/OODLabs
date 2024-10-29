@@ -67,6 +67,17 @@ void Client::DeleteItem(const std::string &pos) const
 
 void Client::Help()
 {
+    std::cout << "Commands:\nInsertParagraph <позиция>|end <текст параграфа>\n"
+                 "InsertImage <позиция>|end <ширина> <высота> <путь к файлу изображения>\n"
+                 "SetTitle <заголовок документа>\n"
+                 "List\n"
+                 "ReplaceText <позиция> <текст параграфа>\n"
+                 "ResizeImage <позиция> <ширина> <высота>\n"
+                 "DeleteItem <позиция>\n"
+                 "Help\n"
+                 "Undo\n"
+                 "Redo\n"
+                 "Save <путь>" ;
 }
 
 void Client::Undo() const

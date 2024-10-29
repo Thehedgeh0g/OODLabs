@@ -30,8 +30,7 @@ namespace Command
             }
             else if (item.GetImage())
             {
-                std::string imagePath = "images/" + std::filesystem::path(item.GetImage()->GetPath()).filename().
-                                        string();
+                std::string imagePath = "images/" + std::filesystem::path(item.GetImage()->GetPath()).filename().string();
                 remove(imagePath.c_str());
 
                 std::ifstream source(item.GetImage()->GetPath(), std::ios::binary);
