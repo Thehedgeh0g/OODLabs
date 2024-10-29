@@ -206,21 +206,20 @@ classDiagram
 
     class Client {
         +void Run()
-        -void InsertParagraph(const std:: string &pos, const std:: string &text)
-        -void InsertImage(const std:: string &pos, const std:: string &width, const std:: string &height, const std:: string &path)
-        -void SetTitle(const std:: string &newTitle)
+        -void InsertParagraph(const string &pos, const string &text)
+        -void InsertImage(const string &pos, const string &width, const string &height, const string &path)
+        -void SetTitle(const string &newTitle)
         -void List()
-        -void ReplaceText(const std:: string &pos, const std:: string &text)
-        -void ResizeImage(const std:: string &pos, const std:: string &width, const std:: string &height)
-        -void DeleteItem(const std:: string &pos)
+        -void ReplaceText(const string &pos, const string &text)
+        -void ResizeImage(const string &pos, const string &width, const string &height)
+        -void DeleteItem(const string &pos)
         -void Help()
         -void Undo()
         -void Redo()
-        -void Save(const std:: string &path)
-        -static std:: optional<size_t> ParsePosition(const std:: string &pos)
-        -void ExecuteCommand(std:: string command)
+        -void Save(const string &path)
+        -static optional<size_t> ParsePosition(const string &pos)
+        -void ExecuteCommand(string command)
     }
 
 ```
 # для чего паттерн команда
-# комманда создает те объекты к которым она обращается 

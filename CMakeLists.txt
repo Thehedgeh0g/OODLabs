@@ -22,6 +22,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 add_executable(OODLabs3_1 3/3_1/main.cpp
+        6/Test/Tests.cpp
 )
 
 add_executable(OODLabs4_1 4/main.cpp
@@ -111,3 +112,62 @@ add_executable(OODLabs5_1 5/main.cpp
         5/Src/Document/Document.cpp
         5/Src/Client/Client.cpp
 )
+
+add_executable(OODLabsTest5_1 5/Test/Tests.cpp
+        5/Src/Document/IDocument.h
+        5/Src/Document/Document.h
+        5/Src/DocumentItem/DocumentItem.h
+        5/Src/DocumentItem/ConstDocumentItem.h
+        5/Src/DocumentItem/IImage.h
+        5/Src/DocumentItem/IParagraph.h
+        5/Src/DocumentItem/Image.h
+        5/Src/DocumentItem/Paragraph.h
+        5/Src/History/History.h
+        5/Src/Command/ICommand.h
+        5/Src/Command/AbstractCommand.h
+        5/Src/Command/InsertParagraphCommand.h
+        5/Src/Command/InsertImageCommand.h
+        5/Src/Command/DeleteCommand.h
+        5/Src/Command/SetTitleCommand.h
+        5/Src/Command/ResizeImageCommand.h
+        5/Src/Command/EditParagraphCommand.h
+        5/Src/Command/SaveCommand.h
+        5/Src/Client/Client.h
+        5/Src/Command/DeleteCommand.cpp
+        5/Src/Command/EditParagraphCommand.cpp
+        5/Src/Command/InsertImageCommand.cpp
+        5/Src/Command/InsertParagraphCommand.cpp
+        5/Src/Command/ResizeImageCommand.cpp
+        5/Src/Command/SaveCommand.cpp
+        5/Src/Command/SetTitleCommand.cpp
+        5/Src/Command/MacroCommand.cpp
+        5/Src/Command/MacroCommand.h
+        5/Src/Command/AbstractCommand.cpp
+        5/Src/CommandHandler/CommandHandler.cpp
+        5/Src/CommandHandler/CommandHandler.h
+        5/Src/Document/Document.cpp
+        5/Src/Client/Client.cpp
+)
+
+target_link_libraries(OODLabsTest5_1 gtest_main gmock gtest)
+enable_testing()
+add_test(NAME OODLabsTest5_1 COMMAND OODLabsTest5_1)
+
+add_executable(OODLabs6_1 6/main.cpp
+        6/app/ModernGraphicsCanvasAdapter.h
+        6/app/ModernGraphicsCanvasClassAdapter.h
+        6/modern_graphics_lib/modern_graphics_lib.h
+        6/shape_drawing_lib/shape_drawing_lib.h
+        6/graphics_lib/graphics_lib.h
+)
+
+add_executable(OODLabsTest6_1 6/Test/Tests.cpp
+        6/app/ModernGraphicsCanvasAdapter.h
+        6/modern_graphics_lib/modern_graphics_lib.h
+        6/shape_drawing_lib/shape_drawing_lib.h
+        6/graphics_lib/graphics_lib.h
+)
+
+target_link_libraries(OODLabsTest6_1 gtest_main gmock gtest)
+enable_testing()
+add_test(NAME OODLabsTest6_1 COMMAND OODLabsTest6_1)

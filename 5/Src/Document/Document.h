@@ -44,7 +44,7 @@ namespace Document
 
         void Save(const std::string &path) const override;
     private:
-        std::string m_title;
+        std::string m_title = "title";
         History::History m_history;
         std::vector<DocumentItem::DocumentItem> m_documentItems;
     };

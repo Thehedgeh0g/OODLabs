@@ -17,19 +17,23 @@ public:
     {
     };
 
-    void Run()
+    void Run(std::istream &input, std::ostream &output)
     {
         std::string line;
-        while (line != "end")
+        while (true)
         {
-            std::getline(std::cin, line);
+            std::getline(input, line);
+            if (line == "exit")
+            {
+                return;
+            }
             try
             {
-                ExecuteCommand(line);
+                ExecuteCommand(line, output);
             }
-            catch (...)
+            catch (std::exception &e)
             {
-                std::cerr << "Invalid command found";;
+                output << e.what() << "\n";
             }
         }
     }
@@ -42,7 +46,7 @@ private:
 
     void SetTitle(const std::string &newTitle) const;
 
-    void List() const;
+    void List(std::ostream &output) const;
 
     void ReplaceText(const std::string &pos, const std::string &text) const;
 
@@ -50,17 +54,17 @@ private:
 
     void DeleteItem(const std::string &pos) const;
 
-    void Help();
+    void Help(std::ostream &output);
 
-    void Undo() const;
+    void Undo(std::ostream &output) const;
 
-    void Redo() const;
+    void Redo(std::ostream &output) const;
 
     void Save(const std::string &path);
 
     static std::optional<size_t> ParsePosition(const std::string &pos);
 
-    void ExecuteCommand(std::string command);
+    void ExecuteCommand(std::string command, std::ostream &output);
 
     const std::string DATA_DELIMITER = " ";
 

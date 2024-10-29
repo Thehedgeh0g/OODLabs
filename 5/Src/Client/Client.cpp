@@ -18,19 +18,20 @@ void Client::SetTitle(const std::string &newTitle) const
     m_document->SetTitle(newTitle);
 }
 
-void Client::List() const
+void Client::List(std::ostream &output) const
 {
+    output << "Title: " << m_document->GetTitle() << "\n";
     for (int i = 0; i < m_document->GetItemsCount(); i++)
     {
         auto documentItem = m_document->GetItem(i);
         if (auto paragraph = documentItem.GetParagraph(); paragraph != nullptr)
         {
-            std::cout << (i + 1) << ". Paragrpah: " << paragraph->GetText() << "\n";
+            output << (i + 1) << ". Paragrpah: " << paragraph->GetText() << "\n";
         }
 
         if (auto image = documentItem.GetImage(); image != nullptr)
         {
-            std::cout << (i + 1) << ". Image: " << image->GetWidth() << " " << image->GetHeight() << " " << image->GetPath() << "\n";
+            output << (i + 1) << ". Image: " << image->GetWidth() << " " << image->GetHeight() << " " << image->GetPath() << "\n";
         }
     }
 }
@@ -58,16 +59,16 @@ void Client::ResizeImage(const std::string &pos, const std::string &width, const
 void Client::DeleteItem(const std::string &pos) const
 {
     auto position = ParsePosition(pos);
-    if (!position.has_value() || (position.value() - 1 < 0))
+    if (!position.has_value())
     {
         throw std::invalid_argument("Invalid position");
     }
-    m_document->DeleteItem(position.value()-1);
+    m_document->DeleteItem(position.value());
 }
 
-void Client::Help()
+void Client::Help(std::ostream &output)
 {
-    std::cout << "Commands:\nInsertParagraph <позиция>|end <текст параграфа>\n"
+    output << "Commands:\nInsertParagraph <позиция>|end <текст параграфа>\n"
                  "InsertImage <позиция>|end <ширина> <высота> <путь к файлу изображения>\n"
                  "SetTitle <заголовок документа>\n"
                  "List\n"
@@ -80,7 +81,7 @@ void Client::Help()
                  "Save <путь>" ;
 }
 
-void Client::Undo() const
+void Client::Undo(std::ostream &output) const
 {
     if (m_document->CanUndo())
     {
@@ -88,11 +89,11 @@ void Client::Undo() const
     }
     else
     {
-        std::cout << "Can't undo" << std::endl;
+        output << "Can't undo" << std::endl;
     }
 }
 
-void Client::Redo() const
+void Client::Redo(std::ostream &output) const
 {
     if (m_document->CanRedo())
     {
@@ -100,7 +101,7 @@ void Client::Redo() const
     }
     else
     {
-        std::cout << "Can't undo" << std::endl;
+        output << "Can't redo" << std::endl;
     }
 }
 
@@ -114,7 +115,7 @@ std::optional<size_t> Client::ParsePosition(const std::string &pos)
     return pos == "end" ? std::nullopt : std::optional<size_t>(std::stoi(pos));
 }
 
-void Client::ExecuteCommand(std::string command)
+void Client::ExecuteCommand(std::string command, std::ostream &output)
 {
     {
         size_t pos;
@@ -138,7 +139,7 @@ void Client::ExecuteCommand(std::string command)
                 case 2:
                     return SetTitle(commandParams[1]);
                 case 3:
-                    return List();
+                    return List(output);
                 case 4:
                     return ReplaceText(commandParams[1], commandParams[2]);
                 case 5:
@@ -146,16 +147,17 @@ void Client::ExecuteCommand(std::string command)
                 case 6:
                     return DeleteItem(commandParams[1]);
                 case 7:
-                    return Help();
+                    return Help(output);
                 case 8:
-                    return Undo();
+                    return Undo(output);
                 case 9:
-                    return Redo();
+                    return Redo(output);
                 case 10:
                     return Save(commandParams[1]);
                 default:
                     throw std::invalid_argument("Unknown command");
             }
         }
+        throw std::invalid_argument("Unknown command");
     }
 }

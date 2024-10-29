@@ -7,6 +7,6 @@
 
 int main() {
   auto client = Client(std::make_unique<Document::Document>());
-  client.Run();
+  client.Run(std::cin, std::cout);
   return 0;
 }

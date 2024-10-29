@@ -18,14 +18,11 @@ namespace Command
             throw std::invalid_argument("Out of range by position");
         }
 
-        // Получаем элемент по позиции
         auto& item = m_documentItems.at(m_position);
 
-        // Проверяем, является ли элемент изображением или параграфом
         std::shared_ptr<DocumentItem::IImage> image = item.GetImage();
         std::shared_ptr<DocumentItem::IParagraph> paragraph = item.GetParagraph();
 
-        // Если изображение отсутствует, используем параграф, иначе - изображение
         std::shared_ptr<DocumentItem::DocumentItem> documentItem;
         if (image == nullptr)
         {
@@ -38,7 +35,6 @@ namespace Command
 
         m_documentItem = std::make_unique<DocumentItem::DocumentItem>(*documentItem);
 
-        // Удаляем элемент из вектора
         m_documentItems.erase(m_documentItems.begin() + m_position);
     }
 
