@@ -20,7 +20,6 @@ namespace Command
             }
             else
             {
-                // todo cerr не используем
                 throw std::runtime_error("Invalid position: " + (m_position.has_value() ? std::to_string(m_position.value()) : "none"));
             }
         }

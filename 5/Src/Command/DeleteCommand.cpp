@@ -8,14 +8,8 @@ namespace Command
 {
     void DeleteCommand::DoExecute()
     {
-        if (m_documentItems.empty())
+        if (m_documentItems.empty() || (m_position >= m_documentItems.size()))
         {
-            return;
-        }
-
-        if (m_position >= m_documentItems.size())
-        {
-            //не падает
             throw std::invalid_argument("Out of range by position");
         }
 

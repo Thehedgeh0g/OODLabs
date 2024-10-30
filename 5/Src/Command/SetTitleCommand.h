@@ -24,6 +24,8 @@ namespace Command
             m_name = "SetTitleCommand";
         }
 
+        bool ReplaceEdit(const ICommand &edit) override;
+
     protected:
         void DoExecute() override;
 
@@ -31,6 +33,7 @@ namespace Command
 
     private:
         std::string m_newTitle;
+        std::string m_prevTitle;
         std::string & m_title;
     };
 }

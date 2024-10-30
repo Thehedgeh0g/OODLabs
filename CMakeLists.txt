@@ -107,8 +107,6 @@ add_executable(OODLabs5_1 5/main.cpp
         5/Src/Command/MacroCommand.cpp
         5/Src/Command/MacroCommand.h
         5/Src/Command/AbstractCommand.cpp
-        5/Src/CommandHandler/CommandHandler.cpp
-        5/Src/CommandHandler/CommandHandler.h
         5/Src/Document/Document.cpp
         5/Src/Client/Client.cpp
 )
@@ -143,8 +141,6 @@ add_executable(OODLabsTest5_1 5/Test/Tests.cpp
         5/Src/Command/MacroCommand.cpp
         5/Src/Command/MacroCommand.h
         5/Src/Command/AbstractCommand.cpp
-        5/Src/CommandHandler/CommandHandler.cpp
-        5/Src/CommandHandler/CommandHandler.h
         5/Src/Document/Document.cpp
         5/Src/Client/Client.cpp
 )

@@ -8,6 +8,19 @@
 
 namespace Command
 {
+    bool EditParagraphCommand::ReplaceEdit(const ICommand &edit) {
+        if (auto otherEditParagraph = dynamic_cast<const EditParagraphCommand *>(&edit);
+            otherEditParagraph &&
+            otherEditParagraph->m_position == m_position &&
+            otherEditParagraph->m_newText == m_text
+        )
+        {
+            m_text = otherEditParagraph->m_text;
+            return true;
+        }
+        return false;
+    }
+
     void EditParagraphCommand::DoExecute()
     {
         if (m_position.has_value() && m_position.value() < m_documentItems.size())

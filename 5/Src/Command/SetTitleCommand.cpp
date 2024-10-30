@@ -4,13 +4,26 @@
 //
 namespace Command
 {
+    bool SetTitleCommand::ReplaceEdit(const ICommand &edit) {
+        if (auto otherSetTitle = dynamic_cast<const SetTitleCommand *>(&edit);
+            otherSetTitle &&
+            otherSetTitle->m_newTitle == m_prevTitle
+        )
+        {
+            m_prevTitle = otherSetTitle->m_prevTitle;
+            return true;
+        }
+        return false;
+    }
+
     void SetTitleCommand::DoExecute()
     {
-        std::swap(m_title, m_newTitle);
+        m_prevTitle = m_title;
+        m_title = m_newTitle;
     }
 
     void SetTitleCommand::DoUnexecute()
     {
-        std::swap(m_newTitle, m_title);
+        m_title = m_prevTitle;
     }
 }

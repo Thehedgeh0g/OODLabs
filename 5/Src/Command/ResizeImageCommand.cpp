@@ -6,6 +6,22 @@
 
 namespace Command
 {
+    bool ResizeImageCommand::ReplaceEdit(const ICommand &edit) {
+        auto otherResize = dynamic_cast<const ResizeImageCommand *>(&edit);
+        if (
+            otherResize &&
+            otherResize->m_position == m_position &&
+            otherResize->m_newHeight == m_width &&
+            otherResize->m_newWidth == m_height
+        )
+        {
+            m_width = otherResize->m_width;
+            m_height = otherResize->m_height;
+            return true;
+        }
+        return false;
+    }
+
     void ResizeImageCommand::DoExecute()
     {
         if (m_position < m_documentItem.size())

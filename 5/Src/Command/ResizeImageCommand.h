@@ -28,6 +28,8 @@ namespace Command
             m_name = "ResizeImageCommand";
         }
 
+        bool ReplaceEdit(const ICommand &edit) override;
+
     protected:
         void DoExecute() override;
 
