@@ -15,6 +15,7 @@ namespace Command
 
         if (m_position >= m_documentItems.size())
         {
+            //не падает
             throw std::invalid_argument("Out of range by position");
         }
 

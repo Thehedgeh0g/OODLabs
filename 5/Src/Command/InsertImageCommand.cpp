@@ -33,7 +33,7 @@ namespace Command
         }
         else
         {
-            std::cerr << "Invalid position: " << m_position.value() << std::endl;
+            throw std::runtime_error("Invalid position: " + (m_position.has_value() ? std::to_string(m_position.value()) : "none"));
         }
     }
 
@@ -49,7 +49,7 @@ namespace Command
         }
         else
         {
-            std::cerr << "Invalid position for undo: " << m_position.value() << std::endl;
+            throw std::runtime_error("Invalid position: " + (m_position.has_value() ? std::to_string(m_position.value()) : "none"));
         }
     }
 }

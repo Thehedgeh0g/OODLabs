@@ -16,8 +16,7 @@ namespace Command
         std::ofstream outFile(m_path + "/document.html");
         if (!outFile.is_open())
         {
-            std::cerr << "Failed to open file for saving: " << m_path << std::endl;
-            return;
+            throw std::runtime_error("Failed to open file for saving: " + m_path);
         }
 
         outFile << "<!DOCTYPE html>\n<html>\n<head>\n<title>" << EscapeHtml(m_title) << "</title>\n</head>\n<body>\n";
@@ -49,7 +48,7 @@ namespace Command
 
     void SaveCommand::DoUnexecute()
     {
-        std::cerr << "SaveCommand cannot be undone." << std::endl;
+        throw std::runtime_error("SaveCommand cannot be undone.");
     }
 
     std::string SaveCommand::EscapeHtml(const std::string &text)

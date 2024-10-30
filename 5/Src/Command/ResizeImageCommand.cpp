@@ -21,12 +21,12 @@ namespace Command
             }
             else
             {
-                std::cerr << "Item at position " << m_position << " is not an image." << std::endl;
+                throw std::runtime_error("Item at position " + std::to_string(m_position) + " is not an image.");
             }
         }
         else
         {
-            std::cerr << "Invalid position: " << m_position << std::endl;
+            throw std::runtime_error("Invalid position: " + (m_position ? std::to_string(m_position) : "none"));
         }
     }
 
@@ -44,12 +44,12 @@ namespace Command
             }
             else
             {
-                std::cerr << "Item at position " << m_position << " is not an image." << std::endl;
+                throw std::runtime_error("Item at position " + std::to_string(m_position) + " is not an image.");
             }
         }
         else
         {
-            std::cerr << "Invalid position: " << m_position << std::endl;
+            throw std::runtime_error("Invalid position: " + (m_position ? std::to_string(m_position) : "none"));
         }
     }
 }

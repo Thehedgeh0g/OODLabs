@@ -2,6 +2,7 @@
 // Created by thehedgeh0g on 30.10.24.
 //
 #include <sstream>
+#include <vector>
 #include <gtest/gtest.h>
 
 #include "../app/ModernGraphicsCanvasClassAdapter.h"

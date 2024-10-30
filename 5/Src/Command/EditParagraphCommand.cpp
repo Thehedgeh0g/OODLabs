@@ -21,12 +21,12 @@ namespace Command
             }
             else
             {
-                std::cerr << "Item at the position is not a paragraph." << std::endl;
+                throw std::runtime_error("Item at the position is not a paragraph.");
             }
         }
         else
         {
-            std::cerr << "Invalid position: " << (m_position.has_value() ? std::to_string(m_position.value()) : "none") << std::endl;
+            throw std::runtime_error("Invalid position: " + (m_position.has_value() ? std::to_string(m_position.value()) : "none"));
         }
     }
 
@@ -42,12 +42,12 @@ namespace Command
             }
             else
             {
-                std::cerr << "Item at the position is not a paragraph." << std::endl;
+                throw std::runtime_error("Item at the position is not a paragraph.");
             }
         }
         else
         {
-            std::cerr << "Invalid position: " << (m_position.has_value() ? std::to_string(m_position.value()) : "none") << std::endl;
+            throw std::runtime_error("Invalid position: " + (m_position.has_value() ? std::to_string(m_position.value()) : "none"));
         }
     }
 }
