@@ -167,3 +167,16 @@ add_executable(OODLabsTest6_1 6/Test/Tests.cpp
 target_link_libraries(OODLabsTest6_1 gtest_main gmock gtest)
 enable_testing()
 add_test(NAME OODLabsTest6_1 COMMAND OODLabsTest6_1)
+add_executable(OODLabs7_1 7/main.cpp
+        7/Canvas/ICanvas.h
+        7/Style/LineStyle.h
+        7/Style/FillStyle.h
+        7/Shape/Shape.h
+        7/Shape/Rectangle.h
+        7/Shape/Ellipse.h
+        7/Shape/Group.h
+        7/Slide/Slide.h
+        7/Shape/Point.h
+        7/Canvas/Canvas.cpp
+        7/Canvas/Canvas.h
+)
