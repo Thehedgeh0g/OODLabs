@@ -19,6 +19,8 @@ namespace Command
 
         void Unexecute() override;
 
+        bool ReplaceEdit(const ICommand &edit) override;
+
         [[nodiscard]] bool IsExecuted() const override;
 
         [[nodiscard]] std::string GetName() const override;

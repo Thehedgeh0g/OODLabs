@@ -14,6 +14,10 @@ namespace Command
         m_isExecuted = false;
     }
 
+    bool AbstractCommand::ReplaceEdit(const ICommand &edit) {
+        return false;
+    }
+
     bool AbstractCommand::IsExecuted() const
     {
         return m_isExecuted;

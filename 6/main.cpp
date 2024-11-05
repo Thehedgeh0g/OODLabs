@@ -7,6 +7,7 @@
 #include "./shape_drawing_lib/shape_drawing_lib.h"
 #include "./graphics_lib/graphics_lib.h"
 #include "./modern_graphics_lib/modern_graphics_lib.h"
+#include "app/ModernGraphicsCanvasClassAdapter.h"
 
 using namespace std;
 using namespace graphics_lib;
@@ -37,7 +38,7 @@ namespace app
     void PaintPictureOnModernGraphicsRenderer()
     {
         CModernGraphicsRenderer renderer(cout);
-        ModernGraphicsCanvasAdapter modernGraphicsAdapter(renderer);
+        ModernGraphicsCanvasClassAdapter modernGraphicsAdapter(cout);
         CCanvasPainter painter(modernGraphicsAdapter);
 
         renderer.BeginDraw();

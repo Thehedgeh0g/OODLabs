@@ -44,25 +44,6 @@ namespace History
 
         void AddAndExecuteCommand(std::unique_ptr<Command::ICommand> command)
         {
-            if (!m_commands.empty() && m_commands.at(m_nextCommandIndex-1)->GetName() == command->GetName())
-            {
-                if (auto* macroCommand = dynamic_cast<Command::MacroCommand*>(command.get()))
-                {
-                    command->Execute();
-                    macroCommand->AddCommand(std::move(command));
-                }
-                else
-                {
-                    auto macro = std::make_unique<Command::MacroCommand>();
-                    command->Execute();
-                    macro->SetName(command->GetName());
-                    macro->AddCommand(std::move(m_commands.at(m_nextCommandIndex-1)));
-                    macro->AddCommand(std::move(command));
-                    m_commands.pop_back();
-                    m_commands.push_back(std::move(macro));
-                }
-                return;
-            }
             if (m_nextCommandIndex < m_commands.size())
             {
                 ++m_nextCommandIndex;
@@ -78,8 +59,15 @@ namespace History
                 try
                 {
                     command->Execute();
+                    auto prevCommand = std::move(m_commands[m_nextCommandIndex > 0 ? m_nextCommandIndex - 1 : 0]);
+                    if (!command->ReplaceEdit(*prevCommand.get())) {
+                        m_commands.back() = std::move(prevCommand);
+                        ++m_nextCommandIndex;
+                    }
+                    else {
+                        m_commands.pop_back();
+                    }
                     m_commands.back() = std::move(command);
-                    ++m_nextCommandIndex;
                 }
                 catch (...)
                 {

@@ -30,6 +30,8 @@ namespace Command
             m_name = "EditParagraphCommand";
         }
 
+        bool ReplaceEdit(const ICommand &edit) override;
+
     protected:
         void DoExecute() override;
 

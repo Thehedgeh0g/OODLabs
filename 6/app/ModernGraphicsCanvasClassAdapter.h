@@ -4,6 +4,8 @@
 
 #ifndef MODERNGRAPHICSCANVASCLASSADAPTER_H
 #define MODERNGRAPHICSCANVASCLASSADAPTER_H
+#include <cstdint>
+
 #include "./../modern_graphics_lib/modern_graphics_lib.h"
 #include "./../graphics_lib/graphics_lib.h"
 using namespace modern_graphics_lib;

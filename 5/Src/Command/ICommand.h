@@ -16,6 +16,8 @@ namespace Command
 
         virtual void Unexecute() = 0;
 
+        virtual bool ReplaceEdit(const ICommand& edit) = 0;
+
         [[nodiscard]] virtual bool IsExecuted() const = 0;
 
         [[nodiscard]] virtual std::string GetName() const = 0;

@@ -8,6 +8,19 @@
 
 namespace Command
 {
+    bool EditParagraphCommand::ReplaceEdit(const ICommand &edit) {
+        if (auto otherEditParagraph = dynamic_cast<const EditParagraphCommand *>(&edit);
+            otherEditParagraph &&
+            otherEditParagraph->m_position == m_position &&
+            otherEditParagraph->m_newText == m_text
+        )
+        {
+            m_text = otherEditParagraph->m_text;
+            return true;
+        }
+        return false;
+    }
+
     void EditParagraphCommand::DoExecute()
     {
         if (m_position.has_value() && m_position.value() < m_documentItems.size())
@@ -21,12 +34,12 @@ namespace Command
             }
             else
             {
-                std::cerr << "Item at the position is not a paragraph." << std::endl;
+                throw std::runtime_error("Item at the position is not a paragraph.");
             }
         }
         else
         {
-            std::cerr << "Invalid position: " << (m_position.has_value() ? std::to_string(m_position.value()) : "none") << std::endl;
+            throw std::runtime_error("Invalid position: " + (m_position.has_value() ? std::to_string(m_position.value()) : "none"));
         }
     }
 
@@ -42,12 +55,12 @@ namespace Command
             }
             else
             {
-                std::cerr << "Item at the position is not a paragraph." << std::endl;
+                throw std::runtime_error("Item at the position is not a paragraph.");
             }
         }
         else
         {
-            std::cerr << "Invalid position: " << (m_position.has_value() ? std::to_string(m_position.value()) : "none") << std::endl;
+            throw std::runtime_error("Invalid position: " + (m_position.has_value() ? std::to_string(m_position.value()) : "none"));
         }
     }
 }

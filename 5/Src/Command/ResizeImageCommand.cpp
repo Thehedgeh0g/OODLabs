@@ -6,6 +6,22 @@
 
 namespace Command
 {
+    bool ResizeImageCommand::ReplaceEdit(const ICommand &edit) {
+        auto otherResize = dynamic_cast<const ResizeImageCommand *>(&edit);
+        if (
+            otherResize &&
+            otherResize->m_position == m_position &&
+            otherResize->m_newHeight == m_width &&
+            otherResize->m_newWidth == m_height
+        )
+        {
+            m_width = otherResize->m_width;
+            m_height = otherResize->m_height;
+            return true;
+        }
+        return false;
+    }
+
     void ResizeImageCommand::DoExecute()
     {
         if (m_position < m_documentItem.size())
@@ -21,12 +37,12 @@ namespace Command
             }
             else
             {
-                std::cerr << "Item at position " << m_position << " is not an image." << std::endl;
+                throw std::runtime_error("Item at position " + std::to_string(m_position) + " is not an image.");
             }
         }
         else
         {
-            std::cerr << "Invalid position: " << m_position << std::endl;
+            throw std::runtime_error("Invalid position: " + (m_position ? std::to_string(m_position) : "none"));
         }
     }
 
@@ -44,12 +60,12 @@ namespace Command
             }
             else
             {
-                std::cerr << "Item at position " << m_position << " is not an image." << std::endl;
+                throw std::runtime_error("Item at position " + std::to_string(m_position) + " is not an image.");
             }
         }
         else
         {
-            std::cerr << "Invalid position: " << m_position << std::endl;
+            throw std::runtime_error("Invalid position: " + (m_position ? std::to_string(m_position) : "none"));
         }
     }
 }
