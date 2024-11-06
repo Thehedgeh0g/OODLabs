@@ -1,27 +1,27 @@
-﻿#include "Canvas/Canvas.h"
-#include "Shape/Ellipse.h"
-#include "Shape/Group.h"
-#include "Shape/Rectangle.h"
+﻿#include "Canvas/CairoCanvas.h"
+#include "Canvas/ConsoleCanvas.h"
+#include "ShapeLoader/ShapeLoader.h"
 #include "Slide/Slide.h"
 
 int main() {
-    Slide slide;
+    try {
+        std::string filename = "./../bin/Input.txt";
+        auto shapes = ShapeLoader::loadShapesFromFile(filename);
+        ConsoleCanvas consoleCanvas(std::cout);
+        CairoCanvas canvas(800, 600, "./../bin/Output.png");
+        Slide slide;
 
-    auto rectangle = std::make_shared<Rectangle>(10, 10, 200, 100);
-    rectangle->SetLineStyle(LineStyle(true, "#FFFFFFFF", 2.0));
-    rectangle->SetFillStyle(FillStyle(true, "#000000FF"));
+        for (const auto& shape : shapes) {
+            slide.AddShape(shape);
+        }
 
-    auto ellipse = std::make_shared<Ellipse>(150, 150, 50, 80);
-    ellipse->SetLineStyle(LineStyle(true, "#FFFFFFFF", 1.5));
-    ellipse->SetFillStyle(FillStyle(true, "#000000FF"));
+        slide.Draw(consoleCanvas);
 
-    auto group = std::make_shared<Group>();
-    group->AddShape(rectangle);
-    group->AddShape(ellipse);
-
-    slide.AddShape(group);
-    auto canvas = Canvas(1000, 800, "./../Bin/Output.png");
-    slide.Draw(canvas);
+        std::cout << "Фигуры успешно загружены и отображены." << std::endl;
+    } catch (const std::exception& ex) {
+        std::cerr << "Ошибка: " << ex.what() << std::endl;
+        return 1;
+    }
 
     return 0;
 }

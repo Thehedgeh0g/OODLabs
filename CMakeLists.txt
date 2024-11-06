@@ -14,6 +14,9 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(json)
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(CAIRO REQUIRED cairo)
+
 include(FetchContent)
 FetchContent_Declare(
         googletest
@@ -167,6 +170,7 @@ add_executable(OODLabsTest6_1 6/Test/Tests.cpp
 target_link_libraries(OODLabsTest6_1 gtest_main gmock gtest)
 enable_testing()
 add_test(NAME OODLabsTest6_1 COMMAND OODLabsTest6_1)
+
 add_executable(OODLabs7_1 7/main.cpp
         7/Canvas/ICanvas.h
         7/Style/LineStyle.h
@@ -177,6 +181,26 @@ add_executable(OODLabs7_1 7/main.cpp
         7/Shape/Group.h
         7/Slide/Slide.h
         7/Shape/Point.h
-        7/Canvas/Canvas.cpp
-        7/Canvas/Canvas.h
+        7/Canvas/CairoCanvas.h
+        7/Shape/Triangle.h
+        7/Canvas/ConsoleCanvas.h
+        7/ShapeLoader/ShapeLoader.h
+        7/ShapeLoader/ShapeLoader.h
 )
+
+target_include_directories(OODLabs7_1 PRIVATE ${CAIRO_INCLUDE_DIRS})
+target_link_libraries(OODLabs7_1 PRIVATE ${CAIRO_LIBRARIES})
+
+add_executable(OODLabsTest7_1 7/Test/Test.cpp
+        7/Canvas/ICanvas.h
+        7/Style/LineStyle.h
+        7/Style/FillStyle.h
+        7/Shape/Shape.h
+        7/Shape/Rectangle.h
+        7/Shape/Ellipse.h
+        7/Shape/Group.h
+        7/Shape/Triangle.h
+        7/Canvas/ConsoleCanvas.h
+)
+
+target_link_libraries(OODLabsTest7_1 gtest_main gmock gtest)

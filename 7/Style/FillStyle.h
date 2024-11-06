@@ -11,7 +11,7 @@ public:
     bool isEnabled;
     std::string color;
 
-    FillStyle(bool enabled = true, const std::string& color = "rgba(255, 255, 255, 1)")
+    FillStyle(bool enabled = false, const std::string& color = "undefiend")
         : isEnabled(enabled), color(color) {}
 };
 #endif //FILLSTYLE_H

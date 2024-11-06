@@ -25,8 +25,22 @@ public:
         }
     }
 
+
+
     const LineStyle& GetLineStyle() const override {
-        // Логика для возврата LineStyle, если одинаков для всех фигур, или undefined
+        if (shapes.empty()) {
+            throw std::runtime_error("No shapes in group");
+        }
+        const LineStyle* commonStyle = nullptr;
+        for (const auto& shape : shapes) {
+            const LineStyle& style = shape->GetLineStyle();
+            if (!commonStyle) {
+                commonStyle = &style;
+            } else if (commonStyle != &style) {
+                return LineStyle();
+            }
+        }
+        return *commonStyle;
     }
 
     void SetLineStyle(const LineStyle& style) override {
@@ -36,7 +50,19 @@ public:
     }
 
     const FillStyle& GetFillStyle() const override {
-        // Логика для возврата FillStyle, если одинаков для всех фигур, или undefined
+        if (shapes.empty()) {
+            throw std::runtime_error("No shapes in group");
+        }
+        const FillStyle* commonStyle = nullptr;
+        for (const auto& shape : shapes) {
+            const FillStyle& style = shape->GetFillStyle();
+            if (!commonStyle) {
+                commonStyle = &style;
+            } else if (commonStyle != &style) {
+                return FillStyle();
+            }
+        }
+        return *commonStyle;
     }
 
     void SetFillStyle(const FillStyle& style) override {

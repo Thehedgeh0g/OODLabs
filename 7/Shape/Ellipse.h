@@ -17,20 +17,27 @@ public:
         : x(x), y(y), radiusX(radiusX), radiusY(radiusY) {}
 
     void Draw(ICanvas& canvas) const override {
-        canvas.SetLineColor(lineStyle.color);
-        canvas.SetFillColor(fillStyle.color);
-        canvas.SetLineThickness(lineStyle.thickness);
-        canvas.FillEllipse(x, y, radiusX * 2, radiusY * 2);
+        if (m_lineStyle.isEnabled)
+        {
+            canvas.SetLineColor(m_lineStyle.color);
+            canvas.SetLineThickness(m_lineStyle.thickness);
+            canvas.DrawEllipse({x, y}, radiusX, radiusY);
+        }
+        if (m_fillStyle.isEnabled)
+        {
+            canvas.SetFillColor(m_fillStyle.color);
+            canvas.FillEllipse(x, y, radiusX * 2, radiusY * 2);
+        }
     }
 
-    const LineStyle& GetLineStyle() const override { return lineStyle; }
-    void SetLineStyle(const LineStyle& style) override { lineStyle = style; }
-    const FillStyle& GetFillStyle() const override { return fillStyle; }
-    void SetFillStyle(const FillStyle& style) override { fillStyle = style; }
+    const LineStyle& GetLineStyle() const override { return m_lineStyle; }
+    void SetLineStyle(const LineStyle& style) override { m_lineStyle = style; }
+    const FillStyle& GetFillStyle() const override { return m_fillStyle; }
+    void SetFillStyle(const FillStyle& style) override { m_fillStyle = style; }
 
 private:
-    LineStyle lineStyle;
-    FillStyle fillStyle;
+    LineStyle m_lineStyle;
+    FillStyle m_fillStyle;
     double x, y, radiusX, radiusY;
 };
 

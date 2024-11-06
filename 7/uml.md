@@ -87,6 +87,5 @@ classDiagram
     Ellipse *-- FillStyle
     Group *-- LineStyle
     Group *-- FillStyle
-    Slide --> ICanvas
-
+    Slide --|> ICanvas : Use
 ```

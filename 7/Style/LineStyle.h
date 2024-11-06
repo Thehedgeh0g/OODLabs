@@ -12,7 +12,7 @@ public:
     std::string color;
     double thickness;
 
-    LineStyle(bool enabled = true, const std::string &color = "rgba(0, 0, 0, 1)", double thickness = 1.0)
+    LineStyle(bool enabled = false, const std::string &color = "undefiend", double thickness = 1.0)
         : isEnabled(enabled), color(color), thickness(thickness) {
     }
 };

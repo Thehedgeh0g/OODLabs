@@ -4,8 +4,8 @@
 
 #ifndef SLIDE_H
 #define SLIDE_H
+#include <map>
 #include <memory>
-#include <vector>
 #include "./../Shape/Shape.h"
 
 class Slide {
