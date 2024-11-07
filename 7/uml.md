@@ -59,6 +59,20 @@ classDiagram
         +SetFillStyle(style: FillStyle)
     }
 
+    class Triangle {
+        -x: double
+        -y: double
+        -radiusX: double
+        -radiusY: double
+        -lineStyle: LineStyle
+        -fillStyle: FillStyle
+        +Draw(canvas: ICanvas)
+        +GetLineStyle(): LineStyle
+        +SetLineStyle(style: LineStyle)
+        +GetFillStyle(): FillStyle
+        +SetFillStyle(style: FillStyle)
+    }
+
     class Group {
         -shapes: vector<Shape>
         +AddShape(shape: Shape)

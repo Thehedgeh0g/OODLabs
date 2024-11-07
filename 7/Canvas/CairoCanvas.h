@@ -100,27 +100,26 @@ private:
         uint8_t r, g, b, a;
     };
 
-    static RGBAColor ParseColor(const std::string &color)
+    static RGBAColor ParseColor(const std::string &colorStr)
     {
-        RGBAColor RGBAColor{};
+        RGBAColor color{};
 
-        if (color[0] == '#') {
+        if (colorStr[0] == '#') {
             std::stringstream ss;
-            ss << std::hex << color.substr(1);
+            ss << std::hex << colorStr.substr(1);
 
             uint32_t intValue;
             ss >> intValue;
 
-            // Извлекаем значения цвета
-            RGBAColor.r = (intValue >> 24) & 0xFF;
-            RGBAColor.g = (intValue >> 16) & 0xFF;
-            RGBAColor.b = (intValue >> 8) & 0xFF;
-            RGBAColor.a = intValue & 0xFF;
+            color.r = static_cast<uint8_t>((intValue >> 24) & 0xFF);
+            color.g = static_cast<uint8_t>((intValue >> 16) & 0xFF);
+            color.b = static_cast<uint8_t>((intValue >> 8) & 0xFF);
+            color.a = static_cast<uint8_t>(intValue & 0xFF);
         } else {
             throw std::invalid_argument("Invalid hex format");
         }
 
-        return RGBAColor;
+        return color;
     }
 
     cairo_surface_t *m_surface = nullptr;

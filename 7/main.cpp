@@ -8,14 +8,14 @@ int main() {
         std::string filename = "./../bin/Input.txt";
         auto shapes = ShapeLoader::loadShapesFromFile(filename);
         ConsoleCanvas consoleCanvas(std::cout);
-        CairoCanvas canvas(800, 600, "./../bin/Output.png");
+        CairoCanvas canvas(1080, 720, "./../bin/Output.png");
         Slide slide;
 
         for (const auto& shape : shapes) {
             slide.AddShape(shape);
         }
 
-        slide.Draw(consoleCanvas);
+        slide.Draw(canvas);
 
         std::cout << "Фигуры успешно загружены и отображены." << std::endl;
     } catch (const std::exception& ex) {

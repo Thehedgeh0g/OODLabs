@@ -47,7 +47,7 @@ private:
                 shape->SetLineStyle(LineStyle(true, outlineColor, lineThickness));
                 shapes.push_back(shape);
             }
-            else if (type == "circle") {
+            else if (type == "ellipse") {
                 double centerX, centerY, rx, ry;
                 iss >> centerX >> centerY >> rx >> ry >> fillColor >> outlineColor >> lineThickness;
                 shape = std::make_shared<Ellipse>(centerX, centerY, rx, ry);
