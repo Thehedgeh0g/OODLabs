@@ -175,7 +175,7 @@ add_executable(OODLabs7_1 7/main.cpp
         7/Canvas/ICanvas.h
         7/Style/LineStyle.h
         7/Style/FillStyle.h
-        7/Shape/Shape.h
+        7/Shape/IShape.h
         7/Shape/Rectangle.h
         7/Shape/Ellipse.h
         7/Shape/Group.h
@@ -195,7 +195,7 @@ add_executable(OODLabsTest7_1 7/Test/Test.cpp
         7/Canvas/ICanvas.h
         7/Style/LineStyle.h
         7/Style/FillStyle.h
-        7/Shape/Shape.h
+        7/Shape/IShape.h
         7/Shape/Rectangle.h
         7/Shape/Ellipse.h
         7/Shape/Group.h

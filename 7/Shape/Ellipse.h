@@ -5,12 +5,12 @@
 #ifndef ELLIPSE_H
 #define ELLIPSE_H
 
-#include "Shape.h"
+#include "IShape.h"
 #include "./../Canvas/ICanvas.h"
 #include "./../Style/LineStyle.h"
 #include "./../Style/FillStyle.h"
 
-class Ellipse : public Shape {
+class Ellipse : public IShape {
 
 public:
     Ellipse(double x, double y, double radiusX, double radiusY)

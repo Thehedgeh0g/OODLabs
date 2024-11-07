@@ -6,10 +6,10 @@
 #define TRIANGLE_H
 
 #include "Point.h"
-#include "Shape.h"
+#include "IShape.h"
 
 
-class Triangle : public Shape
+class Triangle : public IShape
 {
 public:
     Triangle(const Point vertex1, const Point vertex2, const Point vertex3):

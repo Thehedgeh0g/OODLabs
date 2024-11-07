@@ -5,13 +5,13 @@
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
 
-#include "Shape.h"
+#include "IShape.h"
 #include "./../Canvas/ICanvas.h"
 #include "./../Style/LineStyle.h"
 #include "./../Style/FillStyle.h"
 
 
-class Rectangle : public Shape {
+class Rectangle : public IShape {
 
 public:
     Rectangle(double x, double y, double width, double height)

@@ -7,15 +7,15 @@
 
 #include <memory>
 
-#include "Shape.h"
+#include "IShape.h"
 #include "./../Canvas/ICanvas.h"
 #include "./../Style/LineStyle.h"
 #include "./../Style/FillStyle.h"
 
-class Group : public Shape {
+class Group : public IShape {
 
 public:
-    void AddShape(const std::shared_ptr<Shape>& shape) {
+    void AddShape(const std::shared_ptr<IShape>& shape) {
         shapes.push_back(shape);
     }
 
@@ -73,7 +73,7 @@ public:
 
 
 private:
-    std::vector<std::shared_ptr<Shape>> shapes;
+    std::vector<std::shared_ptr<IShape>> shapes;
 };
 
 #endif //GROUP_H

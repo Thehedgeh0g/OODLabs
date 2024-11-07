@@ -9,7 +9,7 @@
 #include "./../Style/LineStyle.h"
 #include "./../Style/FillStyle.h"
 
-class Shape {
+class IShape {
 public:
     virtual void Draw(ICanvas &canvas) const = 0;
 
@@ -21,7 +21,7 @@ public:
 
     virtual void SetFillStyle(const FillStyle &style) = 0;
 
-    virtual ~Shape() = default;
+    virtual ~IShape() = default;
 };
 
 #endif //SHAPE_H

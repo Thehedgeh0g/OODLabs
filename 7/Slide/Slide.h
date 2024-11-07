@@ -6,12 +6,12 @@
 #define SLIDE_H
 #include <map>
 #include <memory>
-#include "./../Shape/Shape.h"
+#include "./../Shape/IShape.h"
 
 class Slide {
 
 public:
-    void AddShape(const std::shared_ptr<Shape>& shape) {
+    void AddShape(const std::shared_ptr<IShape>& shape) {
         shapes.push_back(shape);
     }
 
@@ -21,7 +21,7 @@ public:
         }
     }
 private:
-    std::vector<std::shared_ptr<Shape>> shapes;
+    std::vector<std::shared_ptr<IShape>> shapes;
 };
 
 #endif //SLIDE_H

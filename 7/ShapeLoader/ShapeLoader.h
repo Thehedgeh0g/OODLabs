@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "../Shape/Shape.h"
+#include "../Shape/IShape.h"
 #include "../Shape/Rectangle.h"
 #include "../Shape/Triangle.h"
 #include "../Shape/Ellipse.h"
@@ -17,7 +17,7 @@
 
 class ShapeLoader {
 public:
-    static std::vector<std::shared_ptr<Shape>> loadShapesFromFile(const std::string& filename) {
+    static std::vector<std::shared_ptr<IShape>> loadShapesFromFile(const std::string& filename) {
         std::ifstream file(filename);
         if (!file.is_open()) {
             throw std::runtime_error("Cannot open file: " + filename);
@@ -27,15 +27,15 @@ public:
     }
 
 private:
-    static std::vector<std::shared_ptr<Shape>> loadShapes(std::istream& input) {
-        std::vector<std::shared_ptr<Shape>> shapes;
+    static std::vector<std::shared_ptr<IShape>> loadShapes(std::istream& input) {
+        std::vector<std::shared_ptr<IShape>> shapes;
         std::string line;
 
         while (std::getline(input, line)) {
             std::istringstream iss(line);
             std::string type;
             iss >> type;
-            std::shared_ptr<Shape> shape = nullptr;
+            std::shared_ptr<IShape> shape = nullptr;
             std::string fillColor, outlineColor;
             double lineThickness;
 

@@ -10,6 +10,16 @@ classDiagram
         +FillEllipse(x: double, y: double, width: double, height: double)
         +FillPolygon(points: vector<pair<double, double>>)
     }
+    class ConsoleCanvas {
+        -m_outStream: &ostream
+        +SetFillColor(color: string)
+        +SetLineColor(color: string)
+        +SetLineThickness(thickness: double)
+        +DrawLine(x1: double, y1: double, x2: double, y2: double)
+        +DrawEllipse(x: double, y: double, width: double, height: double)
+        +FillEllipse(x: double, y: double, width: double, height: double)
+        +FillPolygon(points: vector<pair<double, double>>)
+    }
 
     class LineStyle {
         +isEnabled: bool
@@ -22,7 +32,7 @@ classDiagram
         +color: string
     }
 
-    class Shape {
+    class IShape {
         <<interface>>
         +Draw(canvas: ICanvas)
         +GetLineStyle(): LineStyle
@@ -60,10 +70,9 @@ classDiagram
     }
 
     class Triangle {
-        -x: double
-        -y: double
-        -radiusX: double
-        -radiusY: double
+        -vertex1: double
+        -vertex2: double
+        -vertex3: double
         -lineStyle: LineStyle
         -fillStyle: FillStyle
         +Draw(canvas: ICanvas)
@@ -74,8 +83,8 @@ classDiagram
     }
 
     class Group {
-        -shapes: vector<Shape>
-        +AddShape(shape: Shape)
+        -shapes: vector<IShape>
+        +AddShape(IShape: IShape)
         +Draw(canvas: ICanvas)
         +GetLineStyle(): LineStyle
         +SetLineStyle(style: LineStyle)
@@ -84,22 +93,29 @@ classDiagram
     }
 
     class Slide {
-        -shapes: vector<Shape>
-        +AddShape(shape: Shape)
+        -shapes: vector<IShape>
+        +AddShape(IShape: IShape)
         +Draw(canvas: ICanvas)
     }
 
     ICanvas <|.. ConsoleCanvas
-    Shape <|.. Rectangle
-    Shape <|.. Ellipse
-    Shape <|.. Group
-    Slide *-- Shape
-    Group *-- Shape
-    Rectangle *-- LineStyle
-    Rectangle *-- FillStyle
-    Ellipse *-- LineStyle
-    Ellipse *-- FillStyle
-    Group *-- LineStyle
-    Group *-- FillStyle
+    IShape <|.. Rectangle
+    IShape <|.. Ellipse
+    IShape <|.. Triangle
+    IShape <|.. Group
+    Slide *-- IShape
+    Group *-- IShape
+    Rectangle o-- LineStyle
+    Rectangle o-- FillStyle
+    Triangle o-- LineStyle
+    Triangle o-- FillStyle
+    Ellipse o-- LineStyle
+    Ellipse o-- FillStyle
+    Group o-- LineStyle
+    Group o-- FillStyle
+    Group o-- Rectangle
+    Group o-- Triangle
+    Group o-- Ellipse
+    Group o-- Group
     Slide --|> ICanvas : Use
 ```
