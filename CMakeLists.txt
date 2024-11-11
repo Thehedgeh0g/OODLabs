@@ -173,8 +173,7 @@ add_test(NAME OODLabsTest6_1 COMMAND OODLabsTest6_1)
 
 add_executable(OODLabs7_1 7/main.cpp
         7/Canvas/ICanvas.h
-        7/Style/LineStyle.h
-        7/Style/FillStyle.h
+        7/Style/Style.h
         7/Shape/IShape.h
         7/Shape/Rectangle.h
         7/Shape/Ellipse.h
@@ -184,8 +183,16 @@ add_executable(OODLabs7_1 7/main.cpp
         7/Canvas/CairoCanvas.h
         7/Shape/Triangle.h
         7/Canvas/ConsoleCanvas.h
-        7/ShapeLoader/ShapeLoader.h
-        7/ShapeLoader/ShapeLoader.h
+        7/Style/Color.h
+        7/Style/IStyle.h
+        7/Style/IGroupStyle.h
+        7/Style/GroupStyle.h
+        7/Shape/Shape.h
+        7/Shape/IGroup.h
+        7/ShapeFactory/IShapeFactory.h
+        7/ShapeFactory/ShapeFactory.h
+        7/Client.h
+        7/Slide/SlideService.h
 )
 
 target_include_directories(OODLabs7_1 PRIVATE ${CAIRO_INCLUDE_DIRS})
@@ -193,8 +200,7 @@ target_link_libraries(OODLabs7_1 PRIVATE ${CAIRO_LIBRARIES})
 
 add_executable(OODLabsTest7_1 7/Test/Test.cpp
         7/Canvas/ICanvas.h
-        7/Style/LineStyle.h
-        7/Style/FillStyle.h
+        7/Style/Style.h
         7/Shape/IShape.h
         7/Shape/Rectangle.h
         7/Shape/Ellipse.h

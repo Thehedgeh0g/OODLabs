@@ -10,6 +10,7 @@ classDiagram
         +FillEllipse(x: double, y: double, width: double, height: double)
         +FillPolygon(points: vector<pair<double, double>>)
     }
+    
     class ConsoleCanvas {
         -m_outStream: &ostream
         +SetFillColor(color: string)

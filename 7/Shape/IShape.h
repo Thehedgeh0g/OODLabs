@@ -2,26 +2,28 @@
 // Created by flipd on 05.11.2024.
 //
 
-#ifndef SHAPE_H
-#define SHAPE_H
+#ifndef ISHAPE_H
+#define ISHAPE_H
 
+#include "./../Style/Style.h"
 #include "./../Canvas/ICanvas.h"
-#include "./../Style/LineStyle.h"
-#include "./../Style/FillStyle.h"
 
-class IShape {
+namespace shapes
+{
+class IShape
+{
 public:
-    virtual void Draw(ICanvas &canvas) const = 0;
+    virtual const style::IStyle &GetOutlineStyle() const = 0;
 
-    virtual const LineStyle &GetLineStyle() const = 0;
+    virtual const style::IStyle &GetFillStyle() const = 0;
 
-    virtual void SetLineStyle(const LineStyle &style) = 0;
+    virtual style::IStyle &GetOutlineStyle() = 0;
 
-    virtual const FillStyle &GetFillStyle() const = 0;
+    virtual style::IStyle &GetFillStyle() = 0;
 
-    virtual void SetFillStyle(const FillStyle &style) = 0;
+    virtual void Draw(std::shared_ptr<ICanvas> canvas) = 0;
 
     virtual ~IShape() = default;
 };
-
-#endif //SHAPE_H
+}
+#endif //ISHAPE_H

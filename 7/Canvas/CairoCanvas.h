@@ -4,20 +4,19 @@
 
 #ifndef CAIROCANVAS_H
 #define CAIROCANVAS_H
-#include <iostream>
-#include <math.h>
-#include <sstream>
-#include <stdexcept>
+#include <cmath>
 
 #include "ICanvas.h"
 #include <cairo/cairo.h>
+#include "./../Style/Color.h"
 
 #include <utility>
 
 class CairoCanvas final : public ICanvas
 {
 public:
-    CairoCanvas(const int width, const int height, std::string output): m_outputPath(std::move(output)), m_width(width),
+    CairoCanvas(const int width, const int height, std::string output): m_outputPath(std::move(output)),
+                                                                        m_width(width),
                                                                         m_height(height)
     {
         m_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
@@ -26,20 +25,20 @@ public:
         cairo_paint(m_cairo);
     };
 
-    ~CairoCanvas()
+    ~CairoCanvas() override
     {
         cairo_surface_write_to_png(m_surface, m_outputPath.c_str());
         cairo_destroy(m_cairo);
     }
 
-    void SetFillColor(const std::string &color) override
+    void SetFillColor(const style::Color &color) override
     {
-        m_fillColor = ParseColor(color);
+        m_fillColor = color;
     }
 
-    void SetLineColor(const std::string &color) override
+    void SetLineColor(const style::Color &color) override
     {
-        m_lineColor = ParseColor(color);
+        m_lineColor = color;
     }
 
     void SetLineThickness(const double thickness) override
@@ -47,7 +46,7 @@ public:
         m_line_thickness = thickness;
     }
 
-    void DrawLine(const Point start, const Point end) override
+    void DrawLine(const shapes::Point start, const shapes::Point end) override
     {
         cairo_set_line_width(m_cairo, m_line_thickness);
         cairo_set_source_rgba(m_cairo, m_lineColor.r, m_lineColor.g, m_lineColor.b, m_lineColor.a);
@@ -56,7 +55,7 @@ public:
         cairo_stroke(m_cairo);
     }
 
-    void DrawEllipse(Point center, double hx, double hy) override
+    void DrawEllipse(shapes::Point center, double hx, double hy) override
     {
         cairo_set_line_width(m_cairo, m_line_thickness);
         cairo_save(m_cairo);
@@ -68,11 +67,11 @@ public:
         cairo_stroke(m_cairo);
     }
 
-    void FillEllipse(double x, double y, double width, double height) override
+    void FillEllipse(shapes::Point center, double width, double height) override
     {
         cairo_set_source_rgba(m_cairo, m_fillColor.r, m_fillColor.g, m_fillColor.b, m_fillColor.a);
         cairo_save(m_cairo);
-        cairo_translate(m_cairo, x, y);
+        cairo_translate(m_cairo, center.x, center.y);
         cairo_scale(m_cairo, width / 2.0, height / 2.0); // Преобразуем координаты
         cairo_arc(m_cairo, 0, 0, 1, 0, 2 * M_PI); // Рисуем круг
         cairo_fill(m_cairo);
@@ -95,37 +94,10 @@ public:
     }
 
 private:
-    struct RGBAColor
-    {
-        uint8_t r, g, b, a;
-    };
-
-    static RGBAColor ParseColor(const std::string &colorStr)
-    {
-        RGBAColor color{};
-
-        if (colorStr[0] == '#') {
-            std::stringstream ss;
-            ss << std::hex << colorStr.substr(1);
-
-            uint32_t intValue;
-            ss >> intValue;
-
-            color.r = static_cast<uint8_t>((intValue >> 24) & 0xFF);
-            color.g = static_cast<uint8_t>((intValue >> 16) & 0xFF);
-            color.b = static_cast<uint8_t>((intValue >> 8) & 0xFF);
-            color.a = static_cast<uint8_t>(intValue & 0xFF);
-        } else {
-            throw std::invalid_argument("Invalid hex format");
-        }
-
-        return color;
-    }
-
     cairo_surface_t *m_surface = nullptr;
     cairo_t *m_cairo = nullptr;
-    RGBAColor m_fillColor{};
-    RGBAColor m_lineColor{};
+    style::Color m_fillColor{0, 0, 0};
+    style::Color m_lineColor{0, 0, 0};
     double m_line_thickness{};
     std::string m_outputPath;
     int m_width;

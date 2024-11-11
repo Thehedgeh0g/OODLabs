@@ -5,43 +5,54 @@
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
 
-#include "IShape.h"
+#include "Shape.h"
 #include "./../Canvas/ICanvas.h"
-#include "./../Style/LineStyle.h"
-#include "./../Style/FillStyle.h"
+#include "./../Style/Style.h"
 
 
-class Rectangle : public IShape {
-
+namespace shapes
+{
+class Rectangle : public Shape
+{
 public:
-    Rectangle(double x, double y, double width, double height)
-        : x(x), y(y), width(width), height(height) {}
+    Rectangle(
+        double width,
+        double height,
+        double x,
+        double y,
+        std::unique_ptr<style::IStyle> outlineStyle,
+        std::unique_ptr<style::IStyle> fillStyle
+    ): Shape(std::move(outlineStyle), std::move(fillStyle)),
+       m_x(x),
+       m_y(y),
+       m_width(width),
+       m_height(height)
+    {
+    }
 
-    void Draw(ICanvas& canvas) const override {
-        if (m_fillStyle.isEnabled)
+    void DrawImpl(ICanvas &canvas) const override
+    {
+        const style::IStyle &outlineStyle = GetOutlineStyle();
+        const style::IStyle &fillStyle = GetFillStyle();
+        if (fillStyle.IsEnabled())
         {
-            canvas.SetFillColor(m_fillStyle.color);
-            canvas.FillPolygon({{x, y}, {x + width, y}, {x + width, y + height}, {x, y + height}});
+            canvas.SetFillColor(fillStyle.GetColor().value());
+            canvas.FillPolygon({
+                {m_x, m_y}, {m_x + m_width, m_y}, {m_x + m_width, m_y + m_height}, {m_x, m_y + m_height}
+            });
         }
-        if (m_lineStyle.isEnabled)
+        if (outlineStyle.IsEnabled())
         {
-            canvas.SetLineColor(m_lineStyle.color);
-            canvas.SetLineThickness(m_lineStyle.thickness);
-            canvas.DrawLine({x, y}, {x + width, y});
-            canvas.DrawLine({x + width, y}, {x + width, y + height});
-            canvas.DrawLine({x + width, y + height}, {x, y + height});
-            canvas.DrawLine({x, y + height}, {x, y});
+            canvas.SetLineColor(outlineStyle.GetColor().value());
+            canvas.DrawLine({m_x, m_y}, {m_x + m_width, m_y});
+            canvas.DrawLine({m_x + m_width, m_y}, {m_x + m_width, m_y + m_height});
+            canvas.DrawLine({m_x + m_width, m_y + m_height}, {m_x, m_y + m_height});
+            canvas.DrawLine({m_x, m_y + m_height}, {m_x, m_y});
         }
     }
 
-    const LineStyle& GetLineStyle() const override { return m_lineStyle; }
-    void SetLineStyle(const LineStyle& style) override { m_lineStyle = style; }
-    const FillStyle& GetFillStyle() const override { return m_fillStyle; }
-    void SetFillStyle(const FillStyle& style) override { m_fillStyle = style; }
-
 private:
-    LineStyle m_lineStyle;
-    FillStyle m_fillStyle;
-    double x, y, width, height;
+    double m_x, m_y, m_width, m_height;
 };
+}
 #endif //RECTANGLE_H

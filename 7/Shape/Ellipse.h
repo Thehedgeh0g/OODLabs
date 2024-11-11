@@ -6,40 +6,46 @@
 #define ELLIPSE_H
 
 #include "IShape.h"
+#include "Shape.h"
 #include "./../Canvas/ICanvas.h"
-#include "./../Style/LineStyle.h"
-#include "./../Style/FillStyle.h"
 
-class Ellipse : public IShape {
-
+namespace shapes
+{
+class Ellipse : public Shape
+{
 public:
-    Ellipse(double x, double y, double radiusX, double radiusY)
-        : x(x), y(y), radiusX(radiusX), radiusY(radiusY) {}
+    Ellipse(
+        Point center,
+        double radiusX,
+        double radiusY,
+        std::unique_ptr<style::IStyle> outlineStyle,
+        std::unique_ptr<style::IStyle> fillStyle
+    ): Shape(std::move(outlineStyle), std::move(fillStyle)),
+       m_center(center),
+       m_radiusX(radiusX),
+       m_radiusY(radiusY)
+    {
+    }
 
-    void Draw(ICanvas& canvas) const override {
-        if (m_lineStyle.isEnabled)
+    void DrawImpl(ICanvas &canvas) const override
+    {
+        const style::IStyle &outlineStyle = GetOutlineStyle();
+        const style::IStyle &fillStyle = GetFillStyle();
+        if (outlineStyle.IsEnabled())
         {
-            canvas.SetLineColor(m_lineStyle.color);
-            canvas.SetLineThickness(m_lineStyle.thickness);
-            canvas.DrawEllipse({x, y}, radiusX, radiusY);
+            canvas.SetLineColor(outlineStyle.GetColor().value());
+            canvas.DrawEllipse(m_center, m_radiusX, m_radiusY);
         }
-        if (m_fillStyle.isEnabled)
+        if (fillStyle.IsEnabled())
         {
-            canvas.SetFillColor(m_fillStyle.color);
-            canvas.FillEllipse(x, y, radiusX * 2, radiusY * 2);
+            canvas.SetFillColor(fillStyle.GetColor().value());
+            canvas.FillEllipse(m_center, m_radiusX * 2, m_radiusY * 2);
         }
     }
 
-    const LineStyle& GetLineStyle() const override { return m_lineStyle; }
-    void SetLineStyle(const LineStyle& style) override { m_lineStyle = style; }
-    const FillStyle& GetFillStyle() const override { return m_fillStyle; }
-    void SetFillStyle(const FillStyle& style) override { m_fillStyle = style; }
-
 private:
-    LineStyle m_lineStyle;
-    FillStyle m_fillStyle;
-    double x, y, radiusX, radiusY;
+    Point m_center;
+    double m_radiusX, m_radiusY;
 };
-
-
+}
 #endif //ELLIPSE_H
