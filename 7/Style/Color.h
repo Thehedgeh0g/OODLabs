@@ -41,7 +41,7 @@ public:
 
 inline std::ostream &operator<<(std::ostream &os, const Color &color)
 {
-    return os << "r: " << color.r << "; g:" << color.g << "; b:" << color.b << "; a:" << color.a;
+    return os << "r: " << std::to_string(color.r) << "; g:" << std::to_string(color.g) << "; b:" << std::to_string(color.b) << "; a:" << std::to_string(color.a);
 }
 }
 

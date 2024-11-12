@@ -3,147 +3,263 @@
 //
 #include <gtest/gtest.h>
 #include <sstream>
+
+#include "../Shape/Point.h"
 #include "../Shape/Rectangle.h"
 #include "../Shape/Ellipse.h"
 #include "../Shape/Triangle.h"
 #include "../Shape/Group.h"
 #include "../Canvas/ConsoleCanvas.h"
 
-TEST(RectangleTest, DrawWithStylesEnabled) {
+TEST(RectangleTest, DrawWithStylesEnabled)
+{
     std::ostringstream output;
-    ConsoleCanvas canvas(output);
-    Rectangle rect(10, 20, 30, 40);
+    auto canvas = std::make_shared<ConsoleCanvas>(output);
 
-    FillStyle fillStyle(true, "red");
-    LineStyle lineStyle(true, "black", 2.0);
+    auto fillStyle = std::make_unique<style::Style>(style::Color("#FF0000FF"));
+    auto lineStyle = std::make_unique<style::Style>(style::Color("#0000FFFF"));
+    shapes::Rectangle rect(10, 20, 30, 40, std::move(fillStyle), std::move(lineStyle));
 
-    rect.SetFillStyle(fillStyle);
-    rect.SetLineStyle(lineStyle);
+    rect.GetFillStyle().Enable(true);
+    rect.GetOutlineStyle().Enable(true);
     rect.Draw(canvas);
 
-    std::string expectedOutput = "Setting fill color to: red\n"
-                                 "Filling polygon with points: (10, 20) (40, 20) (40, 60) (10, 60) \n"
-                                 "Setting line color to: black\n"
-                                 "Setting line thickness to: 2\n"
-                                 "Drawing line from (10, 20) to (40, 20)\n"
-                                 "Drawing line from (40, 20) to (40, 60)\n"
-                                 "Drawing line from (40, 60) to (10, 60)\n"
-                                 "Drawing line from (10, 60) to (10, 20)\n";
+    std::string expectedOutput = "Setting fill color to: r: 0; g:0; b:255; a:255\n"
+            "Filling polygon with points: (30, 40) (40, 40) (40, 60) (30, 60) \n"
+            "Setting line color to: r: 255; g:0; b:0; a:255\n"
+            "Drawing line from (30, 40) to (40, 40)\n"
+            "Drawing line from (40, 40) to (40, 60)\n"
+            "Drawing line from (40, 60) to (30, 60)\n"
+            "Drawing line from (30, 60) to (30, 40)\n";
     EXPECT_EQ(output.str(), expectedOutput);
 }
 
-TEST(RectangleTest, DrawWithStylesDisabled) {
+TEST(RectangleTest, DrawWithStylesDisabled)
+{
     std::ostringstream output;
-    ConsoleCanvas canvas(output);
-    Rectangle rect(10, 20, 30, 40);
+    auto canvas = std::make_shared<ConsoleCanvas>(output);
 
-    FillStyle fillStyle(false, "red");
-    LineStyle lineStyle(false, "black", 2.0);
+    auto fillStyle = std::make_unique<style::Style>(style::Color("#FF0000FF"));
+    auto lineStyle = std::make_unique<style::Style>(style::Color("#0000FFFF"));
+    shapes::Rectangle rect(10, 20, 30, 40, std::move(fillStyle), std::move(lineStyle));
 
-    rect.SetFillStyle(fillStyle);
-    rect.SetLineStyle(lineStyle);
+    rect.GetFillStyle().Enable(false);
+    rect.GetOutlineStyle().Enable(false);
+
     rect.Draw(canvas);
 
     std::string expectedOutput = "";
     EXPECT_EQ(output.str(), expectedOutput);
 }
 
-TEST(EllipseTest, DrawWithStylesEnabled) {
+TEST(EllipseTest, DrawWithStylesEnabled)
+{
     std::ostringstream output;
-    ConsoleCanvas canvas(output);
-    Ellipse ellipse(50, 60, 20, 15);
+    auto canvas = std::make_shared<ConsoleCanvas>(output);
 
-    FillStyle fillStyle(true, "blue");
-    LineStyle lineStyle(true, "green", 1.5);
+    auto fillStyle = std::make_unique<style::Style>(style::Color("#FF0000FF"));
+    auto lineStyle = std::make_unique<style::Style>(style::Color("#0000FFFF"));
+    shapes::Ellipse ellipse({50, 60}, 20, 15, std::move(fillStyle), std::move(lineStyle));
 
-    ellipse.SetFillStyle(fillStyle);
-    ellipse.SetLineStyle(lineStyle);
+    ellipse.GetFillStyle().Enable(true);
+    ellipse.GetOutlineStyle().Enable(true);
     ellipse.Draw(canvas);
 
-    std::string expectedOutput = "Setting line color to: green\n"
-                                 "Setting line thickness to: 1.5\n"
-                                 "Drawing ellipse with center (50, 60), horizontal radius 20 and vertical radius 15\n"
-                                 "Setting fill color to: blue\n"
-                                 "Filling ellipse at (50, 60) with width 40 and height 30\n";
+    std::string expectedOutput = "Setting line color to: r: 255; g:0; b:0; a:255\n"
+            "Drawing ellipse with center (50, 60), horizontal radius 20 and vertical radius 15\n"
+            "Setting fill color to: r: 0; g:0; b:255; a:255\n"
+            "Filling ellipse at (50, 60) with width 40 and height 30\n";
     EXPECT_EQ(output.str(), expectedOutput);
 }
 
-TEST(EllipseTest, DrawWithStylesDisabled) {
+TEST(EllipseTest, DrawWithStylesDisabled)
+{
     std::ostringstream output;
-    ConsoleCanvas canvas(output);
-    Ellipse ellipse(50, 60, 20, 15);
+    auto canvas = std::make_shared<ConsoleCanvas>(output);
 
-    FillStyle fillStyle(false, "blue");
-    LineStyle lineStyle(false, "green", 1.5);
+    auto fillStyle = std::make_unique<style::Style>(style::Color("#FF0000FF"));
+    auto lineStyle = std::make_unique<style::Style>(style::Color("#0000FFFF"));
+    shapes::Ellipse ellipse({50, 60}, 20, 15, std::move(fillStyle), std::move(lineStyle));
 
-    ellipse.SetFillStyle(fillStyle);
-    ellipse.SetLineStyle(lineStyle);
+    ellipse.GetFillStyle().Enable(false);
+    ellipse.GetOutlineStyle().Enable(false);
     ellipse.Draw(canvas);
 
     std::string expectedOutput = "";
     EXPECT_EQ(output.str(), expectedOutput);
 }
 
-TEST(TriangleTest, DrawWithStylesEnabled) {
+TEST(TriangleTest, DrawWithStylesEnabled)
+{
     std::ostringstream output;
-    ConsoleCanvas canvas(output);
-    Triangle triangle({0, 0}, {10, 0}, {5, 10});
+    auto canvas = std::make_shared<ConsoleCanvas>(output);
 
-    FillStyle fillStyle(true, "yellow");
-    LineStyle lineStyle(true, "purple", 2.5);
+    auto fillStyle = std::make_unique<style::Style>(style::Color("#FF0000FF"));
+    auto lineStyle = std::make_unique<style::Style>(style::Color("#0000FFFF"));
+    shapes::Triangle triangle({0, 0}, {10, 0}, {5, 10}, std::move(lineStyle), std::move(fillStyle));
 
-    triangle.SetFillStyle(fillStyle);
-    triangle.SetLineStyle(lineStyle);
+    triangle.GetFillStyle().Enable(true);
+    triangle.GetOutlineStyle().Enable(true);
     triangle.Draw(canvas);
 
-    std::string expectedOutput = "Setting line color to: purple\n"
-                                 "Setting line thickness to: 2.5\n"
-                                 "Drawing line from (0, 0) to (10, 0)\n"
-                                 "Drawing line from (10, 0) to (5, 10)\n"
-                                 "Drawing line from (5, 10) to (0, 0)\n"
-                                 "Setting fill color to: yellow\n"
-                                 "Filling polygon with points: (0, 0) (10, 0) (5, 10) \n";
+    std::string expectedOutput = "Setting fill color to: r: 255; g:0; b:0; a:255\n"
+            "Filling polygon with points: (0, 0) (10, 0) (5, 10) \n"
+            "Setting line color to: r: 0; g:0; b:255; a:255\n"
+            "Drawing line from (0, 0) to (10, 0)\n"
+            "Drawing line from (10, 0) to (5, 10)\n"
+            "Drawing line from (5, 10) to (0, 0)\n";
     EXPECT_EQ(output.str(), expectedOutput);
 }
 
-TEST(TriangleTest, DrawWithStylesDisabled) {
+TEST(TriangleTest, DrawWithStylesDisabled)
+{
     std::ostringstream output;
-    ConsoleCanvas canvas(output);
-    Triangle triangle({0, 0}, {10, 0}, {5, 10});
+    auto canvas = std::make_shared<ConsoleCanvas>(output);
 
-    FillStyle fillStyle(false, "yellow");
-    LineStyle lineStyle(false, "purple", 2.5);
+    auto fillStyle = std::make_unique<style::Style>(style::Color("#FF0000FF"));
+    auto lineStyle = std::make_unique<style::Style>(style::Color("#0000FFFF"));
+    shapes::Triangle triangle({0, 0}, {10, 0}, {5, 10}, std::move(lineStyle), std::move(fillStyle));
 
-    triangle.SetFillStyle(fillStyle);
-    triangle.SetLineStyle(lineStyle);
+    triangle.GetFillStyle().Enable(false);
+    triangle.GetOutlineStyle().Enable(false);
     triangle.Draw(canvas);
 
     std::string expectedOutput = "";
     EXPECT_EQ(output.str(), expectedOutput);
 }
 
-TEST(GroupTest, DrawWithStylesDisabled) {
+TEST(GroupTest, DrawGroup)
+{
     std::ostringstream output;
-    ConsoleCanvas canvas(output);
-    auto group = std::make_shared<Group>();
+    auto canvas = std::make_shared<ConsoleCanvas>(output);
 
-    auto rect = std::make_shared<Rectangle>(0, 0, 20, 10);
-    auto ellipse = std::make_shared<Ellipse>(30, 30, 10, 5);
+    auto fillStyle = std::make_unique<style::Style>(style::Color("#FF0000FF"));
+    auto lineStyle = std::make_unique<style::Style>(style::Color("#0000FFFF"));
+    auto triangle = std::make_unique<shapes::Triangle>(shapes::Point{0, 0}, shapes::Point{10, 0}, shapes::Point{5, 10},
+                                                       std::move(lineStyle), std::move(fillStyle));
 
-    FillStyle fillStyle(false, "gray");
-    LineStyle lineStyle(false, "cyan", 1.0);
+    triangle->GetFillStyle().Enable(true);
+    triangle->GetOutlineStyle().Enable(true);
 
-    rect->SetFillStyle(fillStyle);
-    rect->SetLineStyle(lineStyle);
-    ellipse->SetFillStyle(fillStyle);
-    ellipse->SetLineStyle(lineStyle);
+    auto fillStyle2 = std::make_unique<style::Style>(style::Color("#FF0000FF"));
+    auto lineStyle2 = std::make_unique<style::Style>(style::Color("#0000FFFF"));
+    auto ellipse = std::make_unique<shapes::Ellipse>(shapes::Point{50, 60}, 20, 15, std::move(fillStyle2),
+                                                     std::move(lineStyle2));
 
-    group->AddShape(rect);
-    group->AddShape(ellipse);
-    group->Draw(canvas);
+    ellipse->GetFillStyle().Enable(true);
+    ellipse->GetOutlineStyle().Enable(true);
 
-    std::string expectedOutput = "";
+    shapes::Group group;
+
+    group.InsertShape(std::move(ellipse), group.GetShapesCount());
+    group.InsertShape(std::move(triangle), group.GetShapesCount());
+    group.Draw(canvas);
+
+    std::string expectedOutput = "Setting line color to: r: 255; g:0; b:0; a:255\n"
+            "Drawing ellipse with center (50, 60), horizontal radius 20 and vertical radius 15\n"
+            "Setting fill color to: r: 0; g:0; b:255; a:255\n"
+            "Filling ellipse at (50, 60) with width 40 and height 30\n"
+            "Setting fill color to: r: 255; g:0; b:0; a:255\n"
+            "Filling polygon with points: (0, 0) (10, 0) (5, 10) \n"
+            "Setting line color to: r: 0; g:0; b:255; a:255\n"
+            "Drawing line from (0, 0) to (10, 0)\n"
+            "Drawing line from (10, 0) to (5, 10)\n"
+            "Drawing line from (5, 10) to (0, 0)\n";
     EXPECT_EQ(output.str(), expectedOutput);
+}
+
+TEST(GroupShapeTest, GetStyleGroupShape)
+{
+    auto fillStyle = std::make_unique<style::Style>(style::Color("#FF0000FF"));
+    auto lineStyle = std::make_unique<style::Style>(style::Color("#0000FFFF"));
+    auto triangle = std::make_unique<shapes::Triangle>(shapes::Point{0, 0}, shapes::Point{10, 0}, shapes::Point{5, 10},
+                                                       std::move(lineStyle), std::move(fillStyle));
+
+    triangle->GetFillStyle().Enable(true);
+    triangle->GetOutlineStyle().Enable(true);
+    auto fillStyle2 = std::make_unique<style::Style>(style::Color("#FF0000FF"));
+    auto lineStyle2 = std::make_unique<style::Style>(style::Color("#0000FFFF"));
+    auto ellipse = std::make_unique<shapes::Ellipse>(shapes::Point{50, 60}, 20, 15, std::move(fillStyle2),
+                                                     std::move(lineStyle2));
+
+    ellipse->GetFillStyle().Enable(true);
+    ellipse->GetOutlineStyle().Enable(true);
+    shapes::Group groupShape;
+
+    groupShape.InsertShape(std::move(ellipse), 0);
+    groupShape.InsertShape(std::move(triangle), 1);
+
+    auto outlineStyleColor = groupShape.GetOutlineStyle().GetColor();
+    bool isOutlineStyleColorNullopt = false;
+    if (outlineStyleColor == std::nullopt)
+    {
+        isOutlineStyleColorNullopt = true;
+    }
+    auto fillStyleColor = groupShape.GetFillStyle().GetColor();
+    bool isFillStyleColorNullopt = false;
+    if (fillStyleColor == std::nullopt)
+    {
+        isFillStyleColorNullopt = true;
+    }
+
+    EXPECT_TRUE(isOutlineStyleColorNullopt);
+    EXPECT_TRUE(isFillStyleColorNullopt);
+}
+
+TEST(GroupShapeTest, GetSameStyleGroupShape)
+{
+    style::Color expectedOutlineStyleColor('#FF0000FF');
+    style::Color expectedFillStyleColor('#0000FFFF');
+    auto fillStyle = std::make_unique<style::Style>(expectedFillStyleColor);
+    auto lineStyle = std::make_unique<style::Style>(expectedOutlineStyleColor);
+    auto triangle = std::make_unique<shapes::Triangle>(shapes::Point{0, 0}, shapes::Point{10, 0}, shapes::Point{5, 10},
+                                                       std::move(lineStyle), std::move(fillStyle));
+
+    triangle->GetFillStyle().Enable(true);
+    triangle->GetOutlineStyle().Enable(true);
+    auto fillStyle2 = std::make_unique<style::Style>(expectedFillStyleColor);
+    auto lineStyle2 = std::make_unique<style::Style>(expectedOutlineStyleColor);
+    auto ellipse = std::make_unique<shapes::Ellipse>(shapes::Point{50, 60}, 20, 15, std::move(fillStyle2),
+                                                     std::move(lineStyle2));
+
+    ellipse->GetFillStyle().Enable(true);
+    ellipse->GetOutlineStyle().Enable(true);
+    shapes::Group groupShape;
+
+    groupShape.InsertShape(std::move(ellipse), 0);
+    groupShape.InsertShape(std::move(triangle), 1);
+
+    EXPECT_EQ(expectedOutlineStyleColor, groupShape.GetOutlineStyle().GetColor());
+    EXPECT_EQ(expectedFillStyleColor, groupShape.GetFillStyle().GetColor());
+}
+
+TEST(GroupShapeTest, SetStyleGroupShape)
+{
+    style::Color expectedOutlineStyleColor('#FFAA00FF');
+    style::Color expectedFillStyleColor('#00AAFFFF');
+    auto fillStyle = std::make_unique<style::Style>(style::Color("#FF0000FF"));
+    auto lineStyle = std::make_unique<style::Style>(style::Color("#0000FFFF"));
+    auto triangle = std::make_unique<shapes::Triangle>(shapes::Point{0, 0}, shapes::Point{10, 0}, shapes::Point{5, 10},
+                                                       std::move(lineStyle), std::move(fillStyle));
+
+    triangle->GetFillStyle().Enable(true);
+    triangle->GetOutlineStyle().Enable(true);
+    auto fillStyle2 = std::make_unique<style::Style>(style::Color("#FF0000FF"));
+    auto lineStyle2 = std::make_unique<style::Style>(style::Color("#0000FFFF"));
+    auto ellipse = std::make_unique<shapes::Ellipse>(shapes::Point{50, 60}, 20, 15, std::move(fillStyle2),
+                                                     std::move(lineStyle2));
+
+    ellipse->GetFillStyle().Enable(true);
+    ellipse->GetOutlineStyle().Enable(true);
+    shapes::Group groupShape;
+
+    groupShape.InsertShape(std::move(ellipse), 0);
+    groupShape.InsertShape(std::move(triangle), 1);
+    groupShape.GetOutlineStyle().SetColor(expectedOutlineStyleColor);
+    groupShape.GetFillStyle().SetColor(expectedFillStyleColor);
+
+    EXPECT_EQ(expectedOutlineStyleColor, groupShape.GetOutlineStyle().GetColor());
+    EXPECT_EQ(expectedFillStyleColor, groupShape.GetFillStyle().GetColor());
 }
 
 int main(int argc, char **argv)

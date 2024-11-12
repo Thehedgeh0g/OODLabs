@@ -31,12 +31,12 @@ public:
     {
         const style::IStyle &outlineStyle = GetOutlineStyle();
         const style::IStyle &fillStyle = GetFillStyle();
-        if (outlineStyle.IsEnabled())
+        if (outlineStyle.IsEnabled().value())
         {
             canvas.SetLineColor(outlineStyle.GetColor().value());
             canvas.DrawEllipse(m_center, m_radiusX, m_radiusY);
         }
-        if (fillStyle.IsEnabled())
+        if (fillStyle.IsEnabled().value())
         {
             canvas.SetFillColor(fillStyle.GetColor().value());
             canvas.FillEllipse(m_center, m_radiusX * 2, m_radiusY * 2);

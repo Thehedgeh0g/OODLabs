@@ -34,14 +34,14 @@ public:
     {
         const style::IStyle &outlineStyle = GetOutlineStyle();
         const style::IStyle &fillStyle = GetFillStyle();
-        if (fillStyle.IsEnabled())
+        if (fillStyle.IsEnabled().value())
         {
             canvas.SetFillColor(fillStyle.GetColor().value());
             canvas.FillPolygon({
                 {m_x, m_y}, {m_x + m_width, m_y}, {m_x + m_width, m_y + m_height}, {m_x, m_y + m_height}
             });
         }
-        if (outlineStyle.IsEnabled())
+        if (outlineStyle.IsEnabled().value())
         {
             canvas.SetLineColor(outlineStyle.GetColor().value());
             canvas.DrawLine({m_x, m_y}, {m_x + m_width, m_y});

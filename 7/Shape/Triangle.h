@@ -32,12 +32,12 @@ public:
     {
         const style::IStyle &outlineStyle = GetOutlineStyle();
         const style::IStyle &fillStyle = GetFillStyle();
-        if (fillStyle.IsEnabled())
+        if (fillStyle.IsEnabled().value())
         {
             canvas.SetFillColor(fillStyle.GetColor().value());
             canvas.FillPolygon({{m_vertex1.x, m_vertex1.y}, {m_vertex2.x, m_vertex2.y}, {m_vertex3.x, m_vertex3.y}});
         }
-        if (outlineStyle.IsEnabled())
+        if (outlineStyle.IsEnabled().value())
         {
             canvas.SetLineColor(outlineStyle.GetColor().value());
             canvas.DrawLine(m_vertex1, m_vertex2);
