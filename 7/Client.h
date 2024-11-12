@@ -8,22 +8,21 @@
 
 #include "ShapeFactory/ShapeFactory.h"
 #include "Slide/Slide.h"
-#include "Slide/SlideService.h"
+#include "Slide/SlideBuilder.h"
 
 class Client
 {
 public:
-    explicit Client(SlideService& slideService) : m_slideService(slideService)
+    explicit Client(SlideBuilder& slideService) : m_slideService(slideService)
     {
     }
 
     void HandleCommands(std::istream &inputData, const std::shared_ptr<ICanvas> &canvas)
     {
         m_slideService.CreateSlide(inputData);
-        m_slideService.DrawSlide(canvas);
     }
 
 private:
-SlideService& m_slideService;
+SlideBuilder& m_slideService;
 };
 #endif //CLIENT_H

@@ -1,122 +1,171 @@
 ```mermaid
 classDiagram
+%% Canvas Section
     class ICanvas {
         <<interface>>
-        +SetFillColor(color: string)
-        +SetLineColor(color: string)
-        +SetLineThickness(thickness: double)
-        +DrawLine(x1: double, y1: double, x2: double, y2: double)
-        +DrawEllipse(x: double, y: double, width: double, height: double)
-        +FillEllipse(x: double, y: double, width: double, height: double)
-        +FillPolygon(points: vector<pair<double, double>>)
+        + SetFillColor(Color color)
+        + SetLineColor(Color color)
+        + SetLineThickness(double thickness)
+        + DrawLine(Point start, Point end)
+        + DrawEllipse(Point center, double radiusX, double radiusY)
     }
-    
+
+    class CairoCanvas {
+        + width: int
+        + height: int
+        + outputPath: string
+        + SetFillColor(Color color)
+        + SetLineColor(Color color)
+        + SetLineThickness(double thickness)
+        + DrawLine(Point start, Point end)
+        + DrawEllipse(Point center, double radiusX, double radiusY)
+    }
+
     class ConsoleCanvas {
-        -m_outStream: &ostream
-        +SetFillColor(color: string)
-        +SetLineColor(color: string)
-        +SetLineThickness(thickness: double)
-        +DrawLine(x1: double, y1: double, x2: double, y2: double)
-        +DrawEllipse(x: double, y: double, width: double, height: double)
-        +FillEllipse(x: double, y: double, width: double, height: double)
-        +FillPolygon(points: vector<pair<double, double>>)
+        + outStream: ostream
+        + SetFillColor(Color color)
+        + SetLineColor(Color color)
+        + SetLineThickness(double thickness)
+        + DrawLine(Point start, Point end)
+        + DrawEllipse(Point center, double radiusX, double radiusY)
     }
 
-    class LineStyle {
-        +isEnabled: bool
-        +color: string
-        +thickness: double
-    }
+    ICanvas <|.. CairoCanvas
+    ICanvas <|.. ConsoleCanvas
 
-    class FillStyle {
-        +isEnabled: bool
-        +color: string
-    }
-
+%% Shape Section
     class IShape {
         <<interface>>
-        +Draw(canvas: ICanvas)
-        +GetLineStyle(): LineStyle
-        +SetLineStyle(style: LineStyle)
-        +GetFillStyle(): FillStyle
-        +SetFillStyle(style: FillStyle)
+        + GetOutlineStyle(): IStyle
+        + GetFillStyle(): IStyle
+        + Draw(shared_ptr~ICanvas~ canvas)
     }
 
-    class Rectangle {
-        -x: double
-        -y: double
-        -width: double
-        -height: double
-        -lineStyle: LineStyle
-        -fillStyle: FillStyle
-        +Draw(canvas: ICanvas)
-        +GetLineStyle(): LineStyle
-        +SetLineStyle(style: LineStyle)
-        +GetFillStyle(): FillStyle
-        +SetFillStyle(style: FillStyle)
+    class Shape {
+        - outlineStyle: unique_ptr~IStyle~
+        - fillStyle: unique_ptr~IStyle~
+        + GetOutlineStyle(): IStyle
+        + GetFillStyle(): IStyle
+        + Draw(shared_ptr~ICanvas~ canvas)
     }
 
-    class Ellipse {
-        -x: double
-        -y: double
-        -radiusX: double
-        -radiusY: double
-        -lineStyle: LineStyle
-        -fillStyle: FillStyle
-        +Draw(canvas: ICanvas)
-        +GetLineStyle(): LineStyle
-        +SetLineStyle(style: LineStyle)
-        +GetFillStyle(): FillStyle
-        +SetFillStyle(style: FillStyle)
+    class Point {
+        + x: double
+        + y: double
     }
 
     class Triangle {
-        -vertex1: double
-        -vertex2: double
-        -vertex3: double
-        -lineStyle: LineStyle
-        -fillStyle: FillStyle
-        +Draw(canvas: ICanvas)
-        +GetLineStyle(): LineStyle
-        +SetLineStyle(style: LineStyle)
-        +GetFillStyle(): FillStyle
-        +SetFillStyle(style: FillStyle)
+        - vertex1: Point
+        - vertex2: Point
+        - vertex3: Point
+        + Draw(shared_ptr~ICanvas~ canvas)
+    }
+
+    class Ellipse {
+        - center: Point
+        - radiusX: double
+        - radiusY: double
+        + Draw(shared_ptr~ICanvas~ canvas)
+    }
+
+    class Rectangle {
+        - width: double
+        - height: double
+        - x: double
+        - y: double
+        + Draw(shared_ptr~ICanvas~ canvas)
     }
 
     class Group {
-        -shapes: vector<IShape>
-        +AddShape(IShape: IShape)
-        +Draw(canvas: ICanvas)
-        +GetLineStyle(): LineStyle
-        +SetLineStyle(style: LineStyle)
-        +GetFillStyle(): FillStyle
-        +SetFillStyle(style: FillStyle)
+        - shapes: vector~shared_ptr~IShape~~
+        + AddShape(shared_ptr~IShape~ shape)
+        + GetShapesCount(): size_t
     }
 
-    class Slide {
-        -shapes: vector<IShape>
-        +AddShape(IShape: IShape)
-        +Draw(canvas: ICanvas)
-    }
-
-    ICanvas <|.. ConsoleCanvas
-    IShape <|.. Rectangle
-    IShape <|.. Ellipse
-    IShape <|.. Triangle
+    IShape <|.. Shape
+    Shape <|-- Triangle
+    Shape <|-- Ellipse
+    Shape <|-- Rectangle
     IShape <|.. Group
-    Slide *-- IShape
-    Group *-- IShape
-    Rectangle o-- LineStyle
-    Rectangle o-- FillStyle
-    Triangle o-- LineStyle
-    Triangle o-- FillStyle
-    Ellipse o-- LineStyle
-    Ellipse o-- FillStyle
-    Group o-- LineStyle
-    Group o-- FillStyle
-    Group o-- Rectangle
-    Group o-- Triangle
-    Group o-- Ellipse
-    Group o-- Group
-    Slide --|> ICanvas : Use
+    Rectangle *-- Point
+    Triangle *-- Point
+    Ellipse *-- Point
+    Group o-- Shape
+
+%% ShapeFactory Section
+    class IShapeFactory {
+        <<interface>>
+        + CreateShape(description: string): shared_ptr~IShape~
+    }
+
+    class ShapeFactory {
+        + CreateShape(description: string): shared_ptr~IShape~
+    }
+
+    IShapeFactory <|-- ShapeFactory
+
+%% Slide Section
+    class Slide {
+        - shapes: vector~shared_ptr~IShape~~
+        + AddShape(shared_ptr~IShape~ shape)
+        + Draw(shared_ptr~ICanvas~ canvas)
+    }
+
+    class SlideService {
+        - shapeFactory: IShapeFactory
+        + CreateSlide(istream inputData)
+        + DrawSlide(shared_ptr~ICanvas~ canvas)
+    }
+
+    SlideService --> Slide
+    Slide --> IShape
+
+%% Style Section
+    class IStyle {
+        <<interface>>
+        + GetColor(): optional~Color~
+        + GetThickness(): optional~double~
+        + IsEnabled(): optional~bool~
+        + SetColor(Color color)
+        + SetThickness(double thickness)
+        + Enable(bool enabled)
+    }
+
+    class Style {
+        - color: optional~Color~
+        - thickness: optional~double~
+        - enabled: optional~bool~
+        + GetColor(): optional~Color~
+        + SetColor(Color color)
+    }
+
+    class Color {
+        + r: uint8_t
+        + g: uint8_t
+        + b: uint8_t
+        + a: uint8_t
+    }
+
+    class IGroupStyle {
+        <<interface>>
+        + InsertStyle(IStyle style, size_t position)
+        + RemoveStyleAtIndex(size_t index)
+    }
+
+    class GroupStyle {
+        - styles: unordered_map~size_t, IStyle~
+        + InsertStyle(IStyle style, size_t position)
+        + RemoveStyleAtIndex(size_t index)
+    }
+
+    IStyle <|.. Style
+    IStyle <|.. IGroupStyle
+    IGroupStyle <|-- GroupStyle
+    GroupStyle o-- Style
+    Style --> Color
+    Shape --> IStyle
+    
+    
+    SlideService o-- IShapeFactory
+    SlideService --> ICanvas : use
 ```

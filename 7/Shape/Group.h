@@ -47,7 +47,7 @@ public:
     {
         for (size_t i = 0; i < GetShapesCount(); ++i)
         {
-            auto shape = GetShapeAtIndex(i);
+            auto shape = std::move(GetShapeAtIndex(i));
             if (shape)
             {
                 shape->Draw(canvas);
@@ -60,15 +60,15 @@ public:
         return m_shapes.size();
     }
 
-    void InsertShape(const std::shared_ptr<IShape> &shape,
-                     size_t position = std::numeric_limits<size_t>::max()) override
+    void InsertShape(std::unique_ptr<IShape> shape, size_t position = std::numeric_limits<size_t>::max()) override
     {
-        m_shapes.insert({position, shape});
-        m_fillStyle->InsertStyle(shape->GetFillStyle(), position);
-        m_outlineStyle->InsertStyle(shape->GetOutlineStyle(), position);
+        m_shapes.emplace(position, std::move(shape));
+        m_fillStyle->InsertStyle(m_shapes[position]->GetFillStyle(), position);
+        m_outlineStyle->InsertStyle(m_shapes[position]->GetOutlineStyle(), position);
     }
 
-    std::shared_ptr<IShape> GetShapeAtIndex(size_t index) const override
+
+    std::unique_ptr<IShape>& GetShapeAtIndex(size_t index) override
     {
         return m_shapes.at(index);
     }
@@ -85,7 +85,7 @@ public:
     }
 
 private:
-    std::unordered_map<size_t, std::shared_ptr<IShape> > m_shapes;
+    std::unordered_map<size_t, std::unique_ptr<IShape> > m_shapes;
     std::unique_ptr<style::IGroupStyle> m_outlineStyle = std::make_unique<style::GroupStyle>();
     std::unique_ptr<style::IGroupStyle> m_fillStyle = std::make_unique<style::GroupStyle>();
 };

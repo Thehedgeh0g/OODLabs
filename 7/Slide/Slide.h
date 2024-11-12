@@ -13,12 +13,15 @@
 class Slide {
 
 public:
-    void AddShape(const std::shared_ptr<shapes::IShape>& shape) {
-        m_shapes.push_back(shape);
+    void AddShape(std::unique_ptr<shapes::IShape> shape) {
+        m_shapes.push_back(std::move(shape));
     }
 
-    void AddShapes(const std::vector<std::shared_ptr<shapes::Group>>& shape) {
-        m_shapes.insert(m_shapes.end(), shape.begin(), shape.end());
+    void AddShapes(std::vector<std::unique_ptr<shapes::Group>> group) {
+        for (auto& shape : group)
+        {
+            m_shapes.push_back(std::move(shape));
+        }
     }
 
     void Draw(const std::shared_ptr<ICanvas>& canvas) const {
@@ -32,7 +35,7 @@ public:
         m_shapes.clear();
     }
 private:
-    std::vector<std::shared_ptr<shapes::IShape>> m_shapes;
+    std::vector<std::unique_ptr<shapes::IShape>> m_shapes;
 };
 
 #endif //SLIDE_H

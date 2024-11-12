@@ -49,7 +49,8 @@ public:
     void DrawLine(const shapes::Point start, const shapes::Point end) override
     {
         cairo_set_line_width(m_cairo, m_line_thickness);
-        cairo_set_source_rgba(m_cairo, m_lineColor.r, m_lineColor.g, m_lineColor.b, m_lineColor.a);
+        cairo_set_source_rgba(m_cairo, m_lineColor.r / 255.0, m_lineColor.g / 255.0, m_lineColor.b / 255.0,
+                              m_lineColor.a / 255.0);
         cairo_move_to(m_cairo, start.x, start.y);
         cairo_line_to(m_cairo, end.x, end.y);
         cairo_stroke(m_cairo);
@@ -59,7 +60,8 @@ public:
     {
         cairo_set_line_width(m_cairo, m_line_thickness);
         cairo_save(m_cairo);
-        cairo_set_source_rgba(m_cairo, m_lineColor.r, m_lineColor.g, m_lineColor.b, m_lineColor.a);
+        cairo_set_source_rgba(m_cairo, m_lineColor.r / 255.0, m_lineColor.g / 255.0, m_lineColor.b / 255.0,
+                              m_lineColor.a / 255.0);
         cairo_translate(m_cairo, center.x, center.y);
         cairo_scale(m_cairo, hx, hy);
         cairo_arc(m_cairo, 0, 0, 1, 0, 2 * M_PI);
@@ -69,7 +71,8 @@ public:
 
     void FillEllipse(shapes::Point center, double width, double height) override
     {
-        cairo_set_source_rgba(m_cairo, m_fillColor.r, m_fillColor.g, m_fillColor.b, m_fillColor.a);
+        cairo_set_source_rgba(m_cairo, m_fillColor.r / 255.0, m_fillColor.g / 255.0, m_fillColor.b / 255.0,
+                              m_fillColor.a / 255.0);
         cairo_save(m_cairo);
         cairo_translate(m_cairo, center.x, center.y);
         cairo_scale(m_cairo, width / 2.0, height / 2.0); // Преобразуем координаты
@@ -80,7 +83,8 @@ public:
 
     void FillPolygon(const std::vector<std::pair<double, double> > &points) override
     {
-        cairo_set_source_rgba(m_cairo, m_fillColor.r, m_fillColor.g, m_fillColor.b, m_fillColor.a);
+        cairo_set_source_rgba(m_cairo, m_fillColor.r / 255.0, m_fillColor.g / 255.0, m_fillColor.b / 255.0,
+                              m_fillColor.a / 255.0);
         if (points.empty())
             return;
 

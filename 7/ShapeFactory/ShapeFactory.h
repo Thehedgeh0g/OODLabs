@@ -18,7 +18,7 @@ namespace shapeFactory
 class ShapeFactory : public IShapeFactory
 {
 public:
-    std::shared_ptr<shapes::IShape> CreateShape(const std::string &description) override
+    std::unique_ptr<shapes::IShape> CreateShape(const std::string &description) override
     {
         std::istringstream iss(description);
 
@@ -45,7 +45,7 @@ public:
     }
 
 private:
-    static std::shared_ptr<shapes::Triangle> CreateTriangle(
+    static std::unique_ptr<shapes::Triangle> CreateTriangle(
         std::istringstream &iss,
         std::unique_ptr<style::IStyle> outlineStyle,
         std::unique_ptr<style::IStyle> fillStyle
@@ -63,7 +63,7 @@ private:
         );
     }
 
-    static std::shared_ptr<shapes::Ellipse> CreateEllipse(
+    static std::unique_ptr<shapes::Ellipse> CreateEllipse(
         std::istringstream &iss,
         std::unique_ptr<style::IStyle> outlineStyle,
         std::unique_ptr<style::IStyle> fillStyle
@@ -75,7 +75,7 @@ private:
         return std::make_unique<shapes::Ellipse>(shapes::Point(centerX, centerY), rx, ry, std::move(outlineStyle), std::move(fillStyle));
     }
 
-    static std::shared_ptr<shapes::Rectangle> CreateRectangle(
+    static std::unique_ptr<shapes::Rectangle> CreateRectangle(
         std::istringstream &iss,
         std::unique_ptr<style::IStyle> outlineStyle,
         std::unique_ptr<style::IStyle> fillStyle

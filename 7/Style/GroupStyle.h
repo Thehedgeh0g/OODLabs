@@ -10,7 +10,7 @@
 
 namespace style
 {
-class GroupStyle : public IGroupStyle, public IStyle
+class GroupStyle : public IGroupStyle
 {
 public:
     GroupStyle() = default;
