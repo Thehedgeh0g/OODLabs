@@ -51,13 +51,10 @@ private:
         std::unique_ptr<style::IStyle> fillStyle
     )
     {
-        double x1, y1, x2, y2, x3, y3;
-        iss >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
+        const auto rect = ParseRect(iss);
 
         return std::make_unique<shapes::Triangle>(
-            shapes::Point(x1, y1),
-            shapes::Point(x2, y2),
-            shapes::Point(x3, y3),
+            rect,
             std::move(outlineStyle),
             std::move(fillStyle)
         );
@@ -69,10 +66,9 @@ private:
         std::unique_ptr<style::IStyle> fillStyle
     )
     {
-        double centerX, centerY, rx, ry;
-        iss >> centerX >> centerY >> rx >> ry;
+        const auto rect = ParseRect(iss);
 
-        return std::make_unique<shapes::Ellipse>(shapes::Point(centerX, centerY), rx, ry, std::move(outlineStyle), std::move(fillStyle));
+        return std::make_unique<shapes::Ellipse>(rect, std::move(outlineStyle), std::move(fillStyle));
     }
 
     static std::unique_ptr<shapes::Rectangle> CreateRectangle(
@@ -81,10 +77,9 @@ private:
         std::unique_ptr<style::IStyle> fillStyle
     )
     {
-        int x, y, width, height;
-        iss >> x >> y >> width >> height;
+        const auto rect = ParseRect(iss);
 
-        return std::make_unique<shapes::Rectangle>(x, y, width, height, std::move(outlineStyle), std::move(fillStyle));
+        return std::make_unique<shapes::Rectangle>(rect, std::move(outlineStyle), std::move(fillStyle));
     }
 
     static std::unique_ptr<style::IStyle> ParseStyle(std::istringstream &iss)
@@ -102,9 +97,26 @@ private:
         }
         catch (const std::invalid_argument &e)
         {
-            std::cout << "Found error in color: \"" <<e.what()  << "\" color for shape not set" << std::endl;
+            std::cout << "Found error in color: \"" << e.what() << "\" color for shape not set" << std::endl;
             return std::make_unique<style::Style>(std::nullopt);
         }
+    }
+
+    static RectD ParseRect(std::istringstream &iss)
+    {
+        double left, top, width, height;
+
+        if (!(iss >> left >> top >> width >> height))
+        {
+            throw std::invalid_argument("Invalid rect parameters");
+        }
+
+        if (width < 0 || height < 0)
+        {
+            throw std::invalid_argument("Width and height must be non-negative");
+        }
+
+        return {left, top, width, height};
     }
 };
 }

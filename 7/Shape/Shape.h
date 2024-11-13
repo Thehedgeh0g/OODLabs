@@ -4,6 +4,7 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 #include "IShape.h"
+#include "RectD.h"
 #include "../Style/Style.h"
 
 namespace shapes
@@ -12,11 +13,22 @@ class Shape : public IShape
 {
 public:
     Shape(
+        const RectD &frame,
         std::unique_ptr<style::IStyle> outlineStyle,
         std::unique_ptr<style::IStyle> fillStyle
     ) : m_outlineStyle(std::move(outlineStyle)),
-        m_fillStyle(std::move(fillStyle))
+        m_fillStyle(std::move(fillStyle)),
+        m_frame(frame)
     {
+    }
+
+    [[nodiscard]] RectD GetFrame() const override
+    {
+        return m_frame;
+    }
+
+    void SetFrame(const RectD &rect) override {
+        m_frame = rect;
     }
 
     style::IStyle &GetOutlineStyle() override
@@ -49,6 +61,7 @@ protected:
     virtual void DrawImpl(ICanvas& canvas) const = 0;
 
 private:
+    RectD m_frame;
     std::unique_ptr<style::IStyle> m_outlineStyle;
     std::unique_ptr<style::IStyle> m_fillStyle;
 };

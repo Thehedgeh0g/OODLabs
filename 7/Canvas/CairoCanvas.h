@@ -81,17 +81,17 @@ public:
         cairo_restore(m_cairo);
     }
 
-    void FillPolygon(const std::vector<std::pair<double, double> > &points) override
+    void FillPolygon(const std::vector<shapes::Point> &points) override
     {
         cairo_set_source_rgba(m_cairo, m_fillColor.r / 255.0, m_fillColor.g / 255.0, m_fillColor.b / 255.0,
                               m_fillColor.a / 255.0);
         if (points.empty())
             return;
 
-        cairo_move_to(m_cairo, points[0].first, points[0].second);
+        cairo_move_to(m_cairo, points[0].x, points[0].y);
         for (const auto &point: points)
         {
-            cairo_line_to(m_cairo, point.first, point.second);
+            cairo_line_to(m_cairo, point.x, point.y);
         }
         cairo_close_path(m_cairo);
         cairo_fill(m_cairo);

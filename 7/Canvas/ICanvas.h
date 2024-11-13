@@ -18,7 +18,7 @@ public:
     virtual void DrawLine(shapes::Point start, shapes::Point end) = 0;
     virtual void DrawEllipse(shapes::Point center, double hx, double hy) = 0;
     virtual void FillEllipse(shapes::Point center, double width, double height) = 0;
-    virtual void FillPolygon(const std::vector<std::pair<double, double>>& points) = 0;
+    virtual void FillPolygon(const std::vector<shapes::Point>& points) = 0;
     virtual ~ICanvas() = default;
 };
 

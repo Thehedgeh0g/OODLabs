@@ -16,38 +16,35 @@ class Rectangle : public Shape
 {
 public:
     Rectangle(
-        double width,
-        double height,
-        double x,
-        double y,
+        const RectD &frame,
         std::unique_ptr<style::IStyle> outlineStyle,
         std::unique_ptr<style::IStyle> fillStyle
-    ): Shape(std::move(outlineStyle), std::move(fillStyle)),
-       m_x(x),
-       m_y(y),
-       m_width(width),
-       m_height(height)
+    ): Shape(frame, std::move(outlineStyle), std::move(fillStyle))
     {
     }
 
     void DrawImpl(ICanvas &canvas) const override
     {
+        RectD frame = GetFrame();
         const style::IStyle &outlineStyle = GetOutlineStyle();
         const style::IStyle &fillStyle = GetFillStyle();
         if (fillStyle.IsEnabled().value())
         {
             canvas.SetFillColor(fillStyle.GetColor().value());
             canvas.FillPolygon({
-                {m_x, m_y}, {m_x + m_width, m_y}, {m_x + m_width, m_y + m_height}, {m_x, m_y + m_height}
+                {frame.left, frame.top},
+                {frame.left + frame.width, frame.top},
+                {frame.left + frame.width, frame.top + frame.height},
+                {frame.left, frame.top + frame.height},
             });
         }
         if (outlineStyle.IsEnabled().value())
         {
             canvas.SetLineColor(outlineStyle.GetColor().value());
-            canvas.DrawLine({m_x, m_y}, {m_x + m_width, m_y});
-            canvas.DrawLine({m_x + m_width, m_y}, {m_x + m_width, m_y + m_height});
-            canvas.DrawLine({m_x + m_width, m_y + m_height}, {m_x, m_y + m_height});
-            canvas.DrawLine({m_x, m_y + m_height}, {m_x, m_y});
+            canvas.DrawLine({frame.left, frame.top}, {frame.left + frame.width, frame.top});
+            canvas.DrawLine({frame.left + frame.width, frame.top}, {frame.left + frame.width, frame.top + frame.height});
+            canvas.DrawLine({frame.left + frame.width, frame.top + frame.height}, {frame.left, frame.top + frame.height});
+            canvas.DrawLine({frame.left, frame.top + frame.height}, {frame.left, frame.top});
         }
     }
 

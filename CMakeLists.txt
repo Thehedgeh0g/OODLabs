@@ -193,6 +193,7 @@ add_executable(OODLabs7_1 7/main.cpp
         7/ShapeFactory/ShapeFactory.h
         7/Client.h
         7/Slide/SlideBuilder.h
+        7/Shape/RectD.h
 )
 
 target_include_directories(OODLabs7_1 PRIVATE ${CAIRO_INCLUDE_DIRS})
@@ -206,6 +207,8 @@ add_executable(OODLabsTest7_1 7/Test/Test.cpp
         7/Shape/Ellipse.h
         7/Shape/Group.h
         7/Shape/Triangle.h
+        7/ShapeFactory/IShapeFactory.h
+        7/ShapeFactory/ShapeFactory.h
         7/Canvas/ConsoleCanvas.h
 )
 

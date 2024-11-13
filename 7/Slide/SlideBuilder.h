@@ -12,9 +12,11 @@
 #include "../Shape/Group.h"
 
 
-class SlideBuilder {
+class SlideBuilder
+{
 public:
-    explicit SlideBuilder(shapeFactory::IShapeFactory &shapeFactory, std::unique_ptr<Slide>& slide) : m_shapeFactory(shapeFactory), m_currentSlide(slide)
+    explicit SlideBuilder(shapeFactory::IShapeFactory &shapeFactory,
+                          std::unique_ptr<Slide> &slide) : m_shapeFactory(shapeFactory), m_currentSlide(slide)
     {
     }
 
@@ -22,32 +24,50 @@ public:
     {
         std::string line;
         auto firstGroup = std::make_unique<shapes::Group>();
-        std::vector<std::unique_ptr<shapes::Group>> groupStack;
+        std::vector<std::unique_ptr<shapes::Group> > groupStack;
         groupStack.push_back(std::move(firstGroup));
 
         while (!inputData.eof())
         {
             std::getline(inputData, line);
-            if (IsStartOrEndCreateGroup(line))
-            {
-                continue;
-            }
+            TrimLeft(line);
 
-            if (auto shape = m_shapeFactory.CreateShape(line))
+            if (line == shapes::Group::typeStart)
             {
-                groupStack.back()->InsertShape(std::move(shape), groupStack.back()->GetShapesCount());
+                // Начинаем новую вложенную группу
+                auto newGroup = std::make_unique<shapes::Group>();
+                groupStack.push_back(std::move(newGroup));
+            }
+            else if (line == shapes::Group::typeEnd)
+            {
+                // Закрываем текущую группу и добавляем её в предыдущую
+                if (groupStack.size() > 1)
+                {
+                    auto completedGroup = std::move(groupStack.back());
+                    groupStack.pop_back();
+                    groupStack.back()->InsertShape(std::move(completedGroup), groupStack.back()->GetShapesCount());
+                }
+            }
+            else
+            {
+                if (auto shape = m_shapeFactory.CreateShape(line))
+                {
+                    groupStack.back()->InsertShape(std::move(shape), groupStack.back()->GetShapesCount());
+                }
             }
         }
 
-        m_currentSlide->AddShapes(std::move(groupStack));
-
+        // Добавляем самую внешнюю группу в слайд
+        if (!groupStack.empty())
+        {
+            m_currentSlide->AddShapes(std::move(groupStack));
+        }
     }
 
 private:
-
     bool IsStartOrEndCreateGroup(
-            const std::string &line
-            )
+        const std::string &line
+    )
     {
         if (line == shapes::Group::typeStart)
         {
@@ -64,7 +84,7 @@ private:
         return false;
     }
 
-    void pushIntoGroup(shapes::Group& group, std::unique_ptr<shapes::IShape> shape, int deep)
+    void pushIntoGroup(shapes::Group &group, std::unique_ptr<shapes::IShape> shape, int deep)
     {
         if (deep == m_groupDeepness)
         {
@@ -72,10 +92,9 @@ private:
         }
         else
         {
-            auto& nestedShape = group.GetShapeAtIndex(group.GetShapesCount() - 1);
-            auto* nestedGroup = dynamic_cast<shapes::Group*>(nestedShape.get());
+            const auto &nestedShape = group.GetShapeAtIndex(group.GetShapesCount() - 1);
 
-            if (nestedGroup)
+            if (auto *nestedGroup = dynamic_cast<shapes::Group *>(nestedShape.get()))
             {
                 pushIntoGroup(*nestedGroup, std::move(shape), deep + 1);
             }
@@ -86,9 +105,12 @@ private:
         }
     }
 
+    static void TrimLeft(std::string& str) {
+        str.erase(0, str.find_first_not_of(" \t\n\r\f\v"));
+    }
 
     int m_groupDeepness = 0;
     shapeFactory::IShapeFactory &m_shapeFactory;
-    std::unique_ptr<Slide>& m_currentSlide;
+    std::unique_ptr<Slide> &m_currentSlide;
 };
 #endif //SLIDESERVICE_H

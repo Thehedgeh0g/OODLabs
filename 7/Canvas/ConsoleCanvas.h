@@ -39,10 +39,10 @@ public:
                   << " and height " << height << std::endl;
     }
 
-    void FillPolygon(const std::vector<std::pair<double, double>>& points) override {
+    void FillPolygon(const std::vector<shapes::Point>& points) override {
         m_outStream << "Filling polygon with points: ";
         for (const auto& point : points) {
-            m_outStream << "(" << point.first << ", " << point.second << ") ";
+            m_outStream << "(" << point.x << ", " << point.y << ") ";
         }
         m_outStream << std::endl;
     }

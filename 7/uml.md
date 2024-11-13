@@ -78,7 +78,7 @@ classDiagram
 
     class Group {
         - shapes: vector~shared_ptr~IShape~~
-        + AddShape(shared_ptr~IShape~ shape)
+        + AddShape(unique_ptr~IShape~ shape)
         + GetShapesCount(): size_t
     }
 
@@ -95,29 +95,28 @@ classDiagram
 %% ShapeFactory Section
     class IShapeFactory {
         <<interface>>
-        + CreateShape(description: string): shared_ptr~IShape~
+        + CreateShape(description: string): unique_ptr~IShape~
     }
 
     class ShapeFactory {
-        + CreateShape(description: string): shared_ptr~IShape~
+        + CreateShape(description: string): unique_ptr~IShape~
     }
 
     IShapeFactory <|-- ShapeFactory
 
 %% Slide Section
     class Slide {
-        - shapes: vector~shared_ptr~IShape~~
-        + AddShape(shared_ptr~IShape~ shape)
+        - shapes: vector~unique_ptr~IShape~~
+        + AddShape(unique_ptr~IShape~ shape)
         + Draw(shared_ptr~ICanvas~ canvas)
     }
 
-    class SlideService {
+    class SlideBuilder {
         - shapeFactory: IShapeFactory
         + CreateSlide(istream inputData)
-        + DrawSlide(shared_ptr~ICanvas~ canvas)
     }
 
-    SlideService --> Slide
+    SlideBuilder --> Slide
     Slide --> IShape
 
 %% Style Section
@@ -164,8 +163,10 @@ classDiagram
     GroupStyle o-- Style
     Style --> Color
     Shape --> IStyle
-    
-    
-    SlideService o-- IShapeFactory
-    SlideService --> ICanvas : use
+
+
+    SlideBuilder o-- IShapeFactory
+    Slide --> ICanvas : use
 ```
+
+Стиль группы  дол

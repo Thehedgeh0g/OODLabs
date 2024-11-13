@@ -5,6 +5,7 @@
 #ifndef ISHAPE_H
 #define ISHAPE_H
 
+#include "RectD.h"
 #include "./../Style/Style.h"
 #include "./../Canvas/ICanvas.h"
 
@@ -13,9 +14,13 @@ namespace shapes
 class IShape
 {
 public:
-    virtual const style::IStyle &GetOutlineStyle() const = 0;
+    [[nodiscard]] virtual RectD GetFrame() const = 0;
 
-    virtual const style::IStyle &GetFillStyle() const = 0;
+    [[nodiscard]] virtual const style::IStyle &GetOutlineStyle() const = 0;
+
+    [[nodiscard]] virtual const style::IStyle &GetFillStyle() const = 0;
+
+    virtual void SetFrame(const RectD &rect) = 0;
 
     virtual style::IStyle &GetOutlineStyle() = 0;
 

@@ -20,7 +20,7 @@ int main()
         std::ifstream in(filename);
         client.HandleCommands(in, canvas);
 
-        slide->Draw(consoleCanvas);
+        slide->Draw(canvas);
 
         std::cout << "Фигуры успешно загружены и отображены." << std::endl;
     }

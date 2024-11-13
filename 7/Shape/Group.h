@@ -23,6 +23,49 @@ public:
 
     Group() = default;
 
+    ~Group() = default;
+
+    RectD GetFrame() const override
+    {
+        if (m_shapes.empty())
+        {
+            throw std::invalid_argument("Group does not have any shapes");
+        }
+
+        double left = std::numeric_limits<double>::max();
+        double top = std::numeric_limits<double>::max();
+        double right = std::numeric_limits<double>::lowest();
+        double bottom = std::numeric_limits<double>::lowest();
+
+        for (const auto &pair: m_shapes)
+        {
+            RectD frame = pair.second->GetFrame();
+            left = std::min(left, frame.left);
+            top = std::min(top, frame.top);
+            right = std::max(right, frame.left + frame.width);
+            bottom = std::max(bottom, frame.top + frame.height);
+        }
+
+        return {left, top, right - left, bottom - top};
+    }
+
+    void SetFrame(const RectD &rect) override
+    {
+        auto [left, top, width, height] = GetFrame();
+        const double scaleX = rect.width / width;
+        const double scaleY = rect.height / height;
+
+        for (const auto &pair: m_shapes)
+        {
+            const RectD shapeFrame = pair.second->GetFrame();
+            const double newLeft = rect.left + (shapeFrame.left - left) * scaleX;
+            const double newTop = rect.top + (shapeFrame.top - top) * scaleY;
+            const double newWidth = shapeFrame.width * scaleX;
+            const double newHeight = shapeFrame.height * scaleY;
+            pair.second->SetFrame({newLeft, newTop, newWidth, newHeight});
+        }
+    }
+
     style::IStyle &GetOutlineStyle() override
     {
         return *m_outlineStyle;
@@ -45,13 +88,9 @@ public:
 
     void Draw(std::shared_ptr<ICanvas> canvas) override
     {
-        for (size_t i = 0; i < GetShapesCount(); ++i)
+        for (auto it = m_shapes.begin(); it != m_shapes.end(); ++it)
         {
-            auto shape = std::move(GetShapeAtIndex(i));
-            if (shape)
-            {
-                shape->Draw(canvas);
-            }
+            it->second->Draw(canvas);
         }
     }
 
@@ -68,7 +107,7 @@ public:
     }
 
 
-    std::unique_ptr<IShape>& GetShapeAtIndex(size_t index) override
+    const std::unique_ptr<IShape>& GetShapeAtIndex(size_t index)  override
     {
         return m_shapes.at(index);
     }
@@ -85,7 +124,7 @@ public:
     }
 
 private:
-    std::unordered_map<size_t, std::unique_ptr<IShape> > m_shapes;
+    std::map<size_t, std::unique_ptr<IShape>> m_shapes;
     std::unique_ptr<style::IGroupStyle> m_outlineStyle = std::make_unique<style::GroupStyle>();
     std::unique_ptr<style::IGroupStyle> m_fillStyle = std::make_unique<style::GroupStyle>();
 };
