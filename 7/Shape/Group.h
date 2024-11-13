@@ -23,9 +23,9 @@ public:
 
     Group() = default;
 
-    ~Group() = default;
+    ~Group() override = default;
 
-    RectD GetFrame() const override
+    [[nodiscard]] RectD GetFrame() const override
     {
         if (m_shapes.empty())
         {
@@ -71,7 +71,7 @@ public:
         return *m_outlineStyle;
     }
 
-    const style::IStyle &GetOutlineStyle() const override
+    [[nodiscard]] const style::IStyle &GetOutlineStyle() const override
     {
         return *m_outlineStyle;
     }
@@ -81,20 +81,20 @@ public:
         return *m_fillStyle;
     }
 
-    const style::IStyle &GetFillStyle() const override
+    [[nodiscard]] const style::IStyle &GetFillStyle() const override
     {
         return *m_fillStyle;
     }
 
     void Draw(std::shared_ptr<ICanvas> canvas) override
     {
-        for (auto it = m_shapes.begin(); it != m_shapes.end(); ++it)
+        for (const auto [index, shape] : m_shapes)
         {
-            it->second->Draw(canvas);
+            shape->Draw(canvas);
         }
     }
 
-    size_t GetShapesCount() const override
+    [[nodiscard]] size_t GetShapesCount() const override
     {
         return m_shapes.size();
     }
