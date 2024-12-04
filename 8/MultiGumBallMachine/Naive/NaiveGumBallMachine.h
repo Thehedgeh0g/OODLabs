@@ -116,7 +116,7 @@ public:
 
 	void Refill(unsigned numBalls)
 	{
-		m_count = numBalls;
+		m_count += numBalls;
 		m_state = numBalls > 0 ? State::NoQuarter : State::SoldOut;
 	}
 
