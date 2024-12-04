@@ -25,39 +25,50 @@ public:
 
     ~Group() override = default;
 
-    [[nodiscard]] RectD GetFrame() const override
+    [[nodiscard]] std::optional<RectD> GetFrame() const override
     {
         if (m_shapes.empty())
         {
-            throw std::invalid_argument("Group does not have any shapes");
+            return std::nullopt;
         }
 
         double left = std::numeric_limits<double>::max();
         double top = std::numeric_limits<double>::max();
         double right = std::numeric_limits<double>::lowest();
         double bottom = std::numeric_limits<double>::lowest();
+        bool anyFrameGotten = false;
 
         for (const auto &pair: m_shapes)
         {
-            RectD frame = pair.second->GetFrame();
+            if (!pair.second->GetFrame().has_value())
+            {
+                continue;
+            }
+            RectD frame = pair.second->GetFrame().value();
+            anyFrameGotten = true;
             left = std::min(left, frame.left);
             top = std::min(top, frame.top);
             right = std::max(right, frame.left + frame.width);
             bottom = std::max(bottom, frame.top + frame.height);
         }
 
-        return {left, top, right - left, bottom - top};
+        if (!anyFrameGotten)
+        {
+            return std::nullopt;
+        }
+
+        return RectD{left, top, right - left, bottom - top};
     }
 
     void SetFrame(const RectD &rect) override
     {
-        auto [left, top, width, height] = GetFrame();
+        auto [left, top, width, height] = GetFrame().value();
         const double scaleX = rect.width / width;
         const double scaleY = rect.height / height;
 
         for (const auto &pair: m_shapes)
         {
-            const RectD shapeFrame = pair.second->GetFrame();
+            const RectD shapeFrame = pair.second->GetFrame().value();
             const double newLeft = rect.left + (shapeFrame.left - left) * scaleX;
             const double newTop = rect.top + (shapeFrame.top - top) * scaleY;
             const double newWidth = shapeFrame.width * scaleX;
@@ -88,7 +99,7 @@ public:
 
     void Draw(std::shared_ptr<ICanvas> canvas) override
     {
-        for (const auto [index, shape] : m_shapes)
+        for (const auto& [index, shape] : m_shapes)
         {
             shape->Draw(canvas);
         }

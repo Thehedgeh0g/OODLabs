@@ -25,7 +25,7 @@ public:
 
     void DrawImpl(ICanvas &canvas) const override
     {
-        RectD frame = GetFrame();
+        RectD frame = GetFrame().value();
         const style::IStyle &outlineStyle = GetOutlineStyle();
         const style::IStyle &fillStyle = GetFillStyle();
         if (fillStyle.IsEnabled().value())

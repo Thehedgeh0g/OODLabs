@@ -22,7 +22,7 @@ public:
     {
     }
 
-    [[nodiscard]] RectD GetFrame() const override
+    [[nodiscard]] std::optional<RectD> GetFrame() const override
     {
         return m_frame;
     }

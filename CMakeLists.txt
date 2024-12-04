@@ -14,6 +14,13 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(json)
 
+FetchContent_Declare(
+        fmt
+        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+)
+
+FetchContent_MakeAvailable(fmt)
+
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(CAIRO REQUIRED cairo)
 
@@ -213,3 +220,35 @@ add_executable(OODLabsTest7_1 7/Test/Test.cpp
 )
 
 target_link_libraries(OODLabsTest7_1 gtest_main gmock gtest)
+
+add_executable(OODLabs8_2 8/main.cpp
+        8/MultiGumBallMachine/IMultiGumballMachine.h
+        8/MultiGumBallMachine/State/HasQuarterState.h
+        8/MultiGumBallMachine/State/IState.h
+        8/MultiGumBallMachine/State/NoQuarterState.h
+        8/MultiGumBallMachine/State/SoldOutState.h
+        8/MultiGumBallMachine/State/SoldState.h
+        8/MultiGumBallMachine/MultiGumballMachine.h
+        8/Menu/Commands/ICommand.h
+        8/Menu/Commands/InsertCoinCommand.h
+        8/Menu/Commands/TurnCrankCommand.h
+        8/Menu/Commands/RefillCommand.h
+        8/Menu/Commands/ExitCommand.h
+        8/Menu/Menu.h
+        8/Menu/Commands/EjectCoinsCommand.h
+        8/MultiGumBallMachine/Naive/NaiveGumBallMachine.h)
+target_link_libraries(OODLabs8_2 fmt::fmt)
+
+add_executable(OODLabsTest8_2 8/Test/Test.cpp
+        8/MultiGumBallMachine/IMultiGumballMachine.h
+        8/MultiGumBallMachine/State/HasQuarterState.h
+        8/MultiGumBallMachine/State/IState.h
+        8/MultiGumBallMachine/State/NoQuarterState.h
+        8/MultiGumBallMachine/State/SoldOutState.h
+        8/MultiGumBallMachine/State/SoldState.h
+        8/MultiGumBallMachine/MultiGumballMachine.h)
+
+target_link_libraries(OODLabsTest8_2 gtest_main gmock gtest fmt::fmt)
+
+add_executable(OODLabsTest8_1 8/Test/StateTest.cpp)
+target_link_libraries(OODLabsTest8_1 gtest_main gmock gtest fmt::fmt)

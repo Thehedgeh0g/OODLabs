@@ -310,6 +310,18 @@ TEST(GroupTest, DeleteShape)
     EXPECT_EQ(output.str(), expectedOutput);
 }
 
+TEST(GroupTest, EmptyGroupInGroup)
+{
+    std::ostringstream output;
+    auto canvas = std::make_shared<ConsoleCanvas>(output);
+    shapeFactory::ShapeFactory factory;
+
+    auto groupWithShapes = std::make_unique<shapes::Group>();
+    auto emptyGroup = std::make_unique<shapes::Group>();
+    groupWithShapes->InsertShape(std::move(emptyGroup), 0);
+    EXPECT_EQ(groupWithShapes->GetFrame(), std::nullopt);
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);

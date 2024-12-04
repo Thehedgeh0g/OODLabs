@@ -25,7 +25,7 @@ public:
 
     void DrawImpl(ICanvas &canvas) const override
     {
-        RectD frame = GetFrame();
+        RectD frame = GetFrame().value();
         Point p1(frame.left + frame.width / 2, frame.top),
                 p2(frame.left, frame.top + frame.height),
                 p3(frame.left + frame.width, frame.top + frame.height);

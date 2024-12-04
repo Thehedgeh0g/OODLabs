@@ -14,7 +14,7 @@ namespace shapes
 class IShape
 {
 public:
-    [[nodiscard]] virtual RectD GetFrame() const = 0;
+    [[nodiscard]] virtual std::optional<RectD> GetFrame() const = 0;
 
     [[nodiscard]] virtual const style::IStyle &GetOutlineStyle() const = 0;
 
