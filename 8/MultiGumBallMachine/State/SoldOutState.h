@@ -46,7 +46,7 @@ public:
     void Refill(unsigned numBalls) override
     {
         std::cout << "Added gumball\n";
-        m_gumballMachine.RefillBall(numBalls);
+        m_gumballMachine.RefillBalls(numBalls);
         if (m_gumballMachine.GetBallCount() > 0)
         {
             if (m_gumballMachine.GetQuarterCount() > 0)

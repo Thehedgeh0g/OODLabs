@@ -106,7 +106,7 @@ private:
         ++m_quarter;
     }
 
-    void RefillBall(unsigned numBalls) override
+    void RefillBalls(unsigned numBalls) override
     {
         m_count += numBalls;
     }

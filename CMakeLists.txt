@@ -247,8 +247,11 @@ add_executable(OODLabsTest8_2 8/Test/Test.cpp
         8/MultiGumBallMachine/State/SoldOutState.h
         8/MultiGumBallMachine/State/SoldState.h
         8/MultiGumBallMachine/MultiGumballMachine.h)
-
 target_link_libraries(OODLabsTest8_2 gtest_main gmock gtest fmt::fmt)
 
 add_executable(OODLabsTest8_1 8/Test/StateTest.cpp)
 target_link_libraries(OODLabsTest8_1 gtest_main gmock gtest fmt::fmt)
+
+add_executable(OODLabsTest8_2_1 8/Test/NaiveTest.cpp
+        8/MultiGumBallMachine/Naive/NaiveGumBallMachine.h)
+target_link_libraries(OODLabsTest8_2_1 gtest_main gmock gtest fmt::fmt)

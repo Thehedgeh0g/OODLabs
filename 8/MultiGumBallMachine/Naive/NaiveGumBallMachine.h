@@ -107,6 +107,7 @@ public:
 				m_state = State::Sold;
 				Dispense();
 			}
+		//todo: можно продать при солд ауте - готово
 			break;
 		case State::Sold:
 			cout << "Turning twice doesn't get you another gumball\n";
@@ -152,11 +153,6 @@ private:
 			cout << "A gumball comes rolling out the slot\n";
 			--m_count;
 			--m_quarter;
-			if (m_count == 0)
-			{
-				cout << "Oops, out of gumballs\n";
-				m_state = State::SoldOut;
-			}
 			if (m_quarter > 0)
 			{
 				m_state = State::HasQuarter;
@@ -164,6 +160,11 @@ private:
 			else
 			{
 				m_state = State::NoQuarter;
+			}
+			if (m_count == 0)
+			{
+				cout << "Oops, out of gumballs\n";
+				m_state = State::SoldOut;
 			}
 			break;
 		case State::NoQuarter:
