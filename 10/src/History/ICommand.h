@@ -7,20 +7,20 @@
 
 namespace History
 {
-    class ICommand
-    {
-    public:
-        virtual ~ICommand() = default;
+class ICommand
+{
+public:
+    virtual ~ICommand() = default;
 
-        virtual void Execute() = 0;
+    virtual void Execute() = 0;
 
-        virtual void Unexecute() = 0;
+    virtual void Unexecute() = 0;
 
-        virtual bool ReplaceEdit(const ICommand& edit) = 0;
+    virtual bool ReplaceEdit(const ICommand &edit) = 0;
 
-        [[nodiscard]] virtual bool IsExecuted() const = 0;
+    [[nodiscard]] virtual bool IsExecuted() const = 0;
 
-        [[nodiscard]] virtual std::string GetName() const = 0;
-    };
+    [[nodiscard]] virtual std::string GetName() const = 0;
+};
 }
 #endif //ICOMMAND_H

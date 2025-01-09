@@ -10,75 +10,76 @@
 
 namespace History
 {
-    class History
+class History
+{
+public:
+    [[nodiscard]] bool CanUndo() const
     {
-    public:
-        [[nodiscard]] bool CanUndo() const
-        {
-            return m_nextCommandIndex != 0;
-        }
+        return m_nextCommandIndex != 0;
+    }
 
-        void Undo()
+    void Undo()
+    {
+        if (CanUndo())
         {
-            if (CanUndo())
+            m_commands[m_nextCommandIndex - 1]->Unexecute();
+            --m_nextCommandIndex;
+        }
+    }
+
+    [[nodiscard]] bool CanRedo() const
+    {
+        return m_nextCommandIndex != m_commands.size();
+    }
+
+    void Redo()
+    {
+        if (CanRedo())
+        {
+            m_commands[m_nextCommandIndex]->Execute();
+            ++m_nextCommandIndex;
+        }
+    }
+
+    void AddAndExecuteCommand(std::unique_ptr<ICommand> command)
+    {
+        if (m_nextCommandIndex < m_commands.size())
+        {
+            ++m_nextCommandIndex;
+            command->Execute();
+            m_commands.resize(m_nextCommandIndex);
+            m_commands.back() = std::move(command);
+        }
+        else
+        {
+            assert(m_nextCommandIndex == m_commands.size());
+            m_commands.emplace_back(nullptr);
+
+            try
             {
-                m_commands[m_nextCommandIndex - 1]->Unexecute();
-                --m_nextCommandIndex;
-            }
-        }
-
-        [[nodiscard]] bool CanRedo() const
-        {
-            return m_nextCommandIndex != m_commands.size();
-        }
-
-        void Redo()
-        {
-            if (CanRedo())
-            {
-                m_commands[m_nextCommandIndex]->Execute();
-                ++m_nextCommandIndex;
-            }
-        }
-
-        void AddAndExecuteCommand(std::unique_ptr<ICommand> command)
-        {
-            if (m_nextCommandIndex < m_commands.size())
-            {
-                ++m_nextCommandIndex;
                 command->Execute();
-                m_commands.resize(m_nextCommandIndex);
-                m_commands.back() = std::move(command);
-            }
-            else
-            {
-                assert(m_nextCommandIndex == m_commands.size());
-                m_commands.emplace_back(nullptr);
-
-                try
+                auto &prevCommand = m_commands[m_nextCommandIndex > 0 ? m_nextCommandIndex - 1 : 0];
+                if (!command->ReplaceEdit(*prevCommand.get()))
                 {
-                    command->Execute();
-                    auto prevCommand = std::move(m_commands[m_nextCommandIndex > 0 ? m_nextCommandIndex - 1 : 0]);
-                    if (!command->ReplaceEdit(*prevCommand.get())) {
-                        m_commands.back() = std::move(prevCommand);
-                        ++m_nextCommandIndex;
-                    }
-                    else {
-                        m_commands.pop_back();
-                    }
-                    m_commands.back() = std::move(command);
+                    ++m_nextCommandIndex;
                 }
-                catch (...)
+                else
                 {
                     m_commands.pop_back();
-                    throw;
                 }
+                m_commands.back() = std::move(command);
+            }
+            catch (...)
+            {
+                m_commands.pop_back();
+                throw;
             }
         }
+    }
 
-    private:
-        std::deque<std::unique_ptr<ICommand>> m_commands;
-        size_t m_nextCommandIndex = 0;
-    };
+private:
+    std::deque<std::unique_ptr<ICommand>> m_commands;
+    size_t m_nextCommandIndex = 0;
+};
 }
 #endif //HISTORY_H

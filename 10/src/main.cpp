@@ -6,8 +6,8 @@
 #include <memory>
 
 #include "App/AppDataObjects/SubscriptionContainer.h"
-#include "Infrastructure/SFMLCanvas.h"
-#include "Infrastructure/SFMLEvent.h"
+#include "Infrastructure/Canvas/SFMLCanvas.h"
+#include "Infrastructure/Events/EventFactory.h"
 #include "Presentor/MainPresenter.h"
 #include "View/Components/VWindow.h"
 #include "SFML/Graphics/RenderWindow.hpp"
@@ -15,35 +15,35 @@
 int main() {
     auto renderWindow = sf::RenderWindow(sf::VideoMode({800, 600}), "paint");
     std::unique_ptr<view::ICanvas> canvas = std::make_unique<SFMLCanvas>(renderWindow);
-    std::unique_ptr<view::VWindow> window = std::make_unique<view::VWindow>(canvas);
     auto draft = std::make_unique<Draft>();
     auto draftContainer = std::make_unique<App::DraftContainer>(draft);
     auto draftFacade = std::make_unique<App::DraftFacade>(draftContainer);
     auto subscriptionContainer = std::make_unique<App::SubscriptionContainer>(draft);
-    auto presenter = std::make_unique<Presenter::MainPresenter>(draftFacade, draftContainer, window, subscriptionContainer);
+    auto draftPresenter = std::make_unique<Presenter::PDraft>(draftFacade);
+    auto shapePresenter = std::make_unique<Presenter::PShape>(draftFacade, draftContainer);
+    auto menu = std::make_unique<view::VMenu>(800, 100, shapePresenter);
+    const auto window = std::make_unique<view::VWindow>(canvas, std::move(menu), std::move(draftPresenter),
+                                                        shapePresenter, draftContainer, subscriptionContainer);
 
 
-    while (renderWindow.isOpen())
-    {
-        while (const std::optional event = renderWindow.pollEvent())
-        {
-                if (!event.has_value())
-                {
-                    break;
-                }
+    while (renderWindow.isOpen()) {
+        while (const std::optional event = renderWindow.pollEvent()) {
+            sf::Clock clock;
+            if (!event.has_value()) {
+                break;
+            }
 
-                if (event->is<sf::Event::Closed>())
-                {
-                    renderWindow.close();
-                    break;
-                }
+            if (event->is<sf::Event::Closed>()) {
+                renderWindow.close();
+                break;
+            }
 
-                try {
-                    presenter->HandleEvent(std::make_unique<SFMLEvent>(*event));
-                }
-                catch (const std::exception& e) {
-                    std::cout << e.what() << std::endl;
-                }
+            try {
+                window->Notify(EventFactory::createEvent(event.value(), clock));
+                clock.restart();
+            } catch (const std::exception &e) {
+                std::cout << e.what() << std::endl;
+            }
 
             renderWindow.clear(sf::Color::White);
             window->Draw();

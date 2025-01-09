@@ -42,13 +42,12 @@ add_executable(10
         src/App/UseCase/InsertShapeUseCase.h
         src/App/UseCase/IUseCase.h
         src/App/AppDataObjects/DraftContainer.h
-        src/Infrastructure/SFMLCanvas.h
-        src/Infrastructure/SFMLCanvas.cpp
+        src/Infrastructure/Canvas/SFMLCanvas.h
+        src/Infrastructure/Canvas/SFMLCanvas.cpp
         src/View/ShapeStrategies/IFigure.h
         src/View/ShapeStrategies/Circle.h
         src/View/ShapeStrategies/Rectangle.h
         src/View/ShapeStrategies/Triangle.h
-        src/View/Components/VWindow.h
         src/View/Components/VShape.h
         src/View/ICanvas.h
         src/Presentor/IPresentor.h
@@ -64,8 +63,15 @@ add_executable(10
         src/Common/IObservable.h
         src/View/Components/VMenu.h
         src/Presentor/IInteractionEvent.h
-        src/Infrastructure/SFMLEvent.h
         src/App/AppDataObjects/SubscriptionContainer.h
+        src/Infrastructure/Events/MouseDownEvent.h
+        src/Infrastructure/Events/EventFactory.h
+        src/View/Components/VWindow.h
+        src/View/Events/CreateShapeEvent.h
+        src/View/Events/DeleteShapeEvent.h
+        src/View/Events/SelectShapeEvent.h
+        src/View/Events/AddShapeToSelectEvent.h
+        src/View/Events/MoveSelectedEvent.h
 )
 
 target_link_libraries(10 sfml-graphics sfml-window sfml-system Boost::filesystem Boost::signals2)

@@ -10,29 +10,29 @@
 
 namespace History
 {
-    class AbstractCommand : public ICommand
-    {
-    public:
-        ~AbstractCommand() override = default;
+class AbstractCommand : public ICommand
+{
+public:
+    ~AbstractCommand() override = default;
 
-        void Execute() override;
+    void Execute() override;
 
-        void Unexecute() override;
+    void Unexecute() override;
 
-        bool ReplaceEdit(const ICommand &edit) override;
+    bool ReplaceEdit(const ICommand &edit) override;
 
-        [[nodiscard]] bool IsExecuted() const override;
+    [[nodiscard]] bool IsExecuted() const override;
 
-        [[nodiscard]] std::string GetName() const override;
+    [[nodiscard]] std::string GetName() const override;
 
-    protected:
-        virtual void DoExecute() = 0;
+protected:
+    virtual void DoExecute() = 0;
 
-        virtual void DoUnexecute() = 0;
+    virtual void DoUnexecute() = 0;
 
-        bool m_isExecuted = false;
+    bool m_isExecuted = false;
 
-        std::string m_name;
-    };
+    std::string m_name;
+};
 }
 #endif //ABSTRACTCOMMAND_H

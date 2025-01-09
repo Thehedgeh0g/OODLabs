@@ -15,11 +15,14 @@ namespace view {
     public:
         virtual ~IFigure() = default;
 
-        virtual void Draw(uint32_t color, std::unique_ptr<view::ICanvas> &canvas) = 0;
+        virtual void Draw(uint32_t color, std::unique_ptr<view::ICanvas> &canvas, bool drawFrame) = 0;
 
         virtual void UpdateFrame(RectD frame) = 0;
 
-        virtual bool PointInFrame(Point point) = 0;
+        virtual bool PointInFigure(Point point) = 0;
+        virtual bool IsPointInFrame(Point point) = 0;
+
+        virtual bool IsOnEditSquare(Point point) = 0;
 
         [[nodiscard]] virtual std::string GetTypeAsString() = 0;
 

@@ -8,7 +8,8 @@
 
 enum class ShapeType { Circle, Rectangle, Triangle };
 enum class UpdateType { Move, Resize };
-enum class ViewInteractionType { MouseDown, MouseUp, ButtonPress };
+enum class ViewInteractionType { MouseDown, MouseUp, MouseMove, DeleteButtonPress, UndoButtonsPressed, RedoButtonsPressed, Unknown};
+const double EDIT_SQUARE_SIZE = 20;
 
 struct Point {
     double x, y;

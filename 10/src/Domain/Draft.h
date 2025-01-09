@@ -22,6 +22,7 @@ public:
     void RemoveShape(const std::string& id) {
         auto shape = m_shapes.find(id);
         if (shape != m_shapes.end()) {
+            m_shapeDeleted(shape->first);
             m_shapes.erase(shape);
         }
     }
@@ -38,7 +39,7 @@ public:
         return m_shapes;
     }
 
-    boost::signals2::connection DoOnShapeCreated(
+    boost::signals2::scoped_connection DoOnShapeCreated(
         const std::function<void(
             const RectD & ,
             const std::string &,
@@ -49,7 +50,7 @@ public:
         return m_shapeCreated.connect(handler);
     }
 
-    boost::signals2::connection DoOnShapeDeleted(
+    boost::signals2::scoped_connection DoOnShapeDeleted(
         const std::function<void(
             const std::string &
         )> &handler)

@@ -8,6 +8,7 @@
 #include <string>
 #include <boost/signals2/connection.hpp>
 
+#include "ShapeSelection.h"
 #include "../../Domain/Draft.h"
 #include "./../../Domain/Shape.h"
 
@@ -64,10 +65,15 @@ namespace App {
             m_shapeModifiedSubscriptions[id].disconnect();
         }
 
+        void SubscribeOnSelectionChanged(ShapeSelection &selection, const std::function<void(const std::string &)> &handler) {
+            m_shapeSelectionSubscription = selection.DoOnSelectionChanged(handler);
+        }
+
     private:
-        boost::signals2::connection m_shapeCreatedSubscription;
-        boost::signals2::connection m_shapeDeletedSubscription;
-        std::map<std::string, boost::signals2::connection> m_shapeModifiedSubscriptions;
+        boost::signals2::scoped_connection m_shapeCreatedSubscription;
+        boost::signals2::scoped_connection m_shapeDeletedSubscription;
+        boost::signals2::scoped_connection m_shapeSelectionSubscription;
+        std::map<std::string, boost::signals2::scoped_connection> m_shapeModifiedSubscriptions;
     };
 }
 

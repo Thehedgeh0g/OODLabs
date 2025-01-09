@@ -5,7 +5,7 @@
 #ifndef SFMLCANVAS_H
 #define SFMLCANVAS_H
 #include "SFML/Graphics/RenderWindow.hpp"
-#include "../View/ICanvas.h"
+#include "../../View/ICanvas.h"
 
 class SFMLCanvas : public view::ICanvas {
 public:

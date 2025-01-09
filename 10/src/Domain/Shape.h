@@ -72,7 +72,7 @@ public:
         return m_id != other.m_id;
     }
 
-    boost::signals2::connection DoOnShapeChanged(const std::function<void(const RectD &, const std::string&)> &handler) {
+    boost::signals2::scoped_connection DoOnShapeChanged(const std::function<void(const RectD &, const std::string&)> &handler) {
         return m_frameChanged.connect(handler);
     }
 

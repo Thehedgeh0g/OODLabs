@@ -15,10 +15,10 @@ namespace App {
     class UpdateShapeCommand : public History::AbstractCommand {
         public:
             UpdateShapeCommand(
-                std::shared_ptr<Shape>& shape,
+                std::shared_ptr<Shape> shape,
                 const std::optional<RectD> &frame,
                 const std::optional<uint32_t> color
-            ): m_shape(shape), m_newFrame(frame), m_color(color) {
+            ): m_shape(std::move(shape)), m_newFrame(frame), m_color(color) {
                 m_name = "UpdateShapeCommand";
             }
 
@@ -61,7 +61,7 @@ namespace App {
             }
 
         private:
-            std::shared_ptr<Shape>& m_shape;
+            std::shared_ptr<Shape> m_shape;
             std::optional<RectD> m_newFrame;
             std::optional<uint32_t> m_newColor;
             std::optional<RectD> m_frame;
